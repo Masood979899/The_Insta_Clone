@@ -7,7 +7,6 @@ import Input from '../../components/Input'
 const CommentScreen = () => {
   return (
     <View style={{flex:1}}>
-      <Text>my first comment</Text>
       <FlatList
       data={comments}
       renderItem={({ item }) => (
