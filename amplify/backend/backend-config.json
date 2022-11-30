@@ -6,14 +6,16 @@
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [],
-        "signupAttributes": [
-          "EMAIL",
-          "NAME"
+        "socialProviders": [
+          "FACEBOOK",
+          "GOOGLE"
         ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [],
         "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 6,
+          "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": [
             "REQUIRES_LOWERCASE"
           ]

@@ -12,12 +12,11 @@ import { useState } from 'react';
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const USERNAME_REGEX = /^[a-zA-Z0-9_]*$/; // alphanumeric and underscore
+// const USERNAME_REGEX = /^[a-zA-Z0-9_]*$/; // alphanumeric and underscore
 
 type SignUpData = {
   name: string;
   email: string;
-  username: string;
   password: string;
   passwordRepeat: string;
 };
@@ -28,16 +27,17 @@ const SignUpScreen = () => {
   const pwd = watch('password');
   const navigation = useNavigation<SignUpNavigationProp>();
 
-  const onRegisterPressed = async({name, email, username, password}: SignUpData) => {
+  const onRegisterPressed = async({name, email,  password}: SignUpData) => {
   if (loading){
     return;
   }
   setLoading(true);
   try {
-    await Auth.signUp({username, password, attributes:{name , email}
+    // console.log(name,email,password)
+    await Auth.signUp({username:email, password, attributes:{name,email}
     })   
     // console.log(response)
-    navigation.navigate("Confirm email",{username})
+    navigation.navigate("Confirm email",{email})
   } catch (e) {
     
     Alert.alert("Invalid Details",(e as Error).message)
@@ -81,26 +81,7 @@ const SignUpScreen = () => {
           }}
         />
 
-        <FormInput
-          name="username"
-          control={control}
-          placeholder="Username"
-          rules={{
-            required: 'Username is required',
-            minLength: {
-              value: 3,
-              message: 'Username should be at least 3 characters long',
-            },
-            maxLength: {
-              value: 24,
-              message: 'Username should be max 24 characters long',
-            },
-            pattern: {
-              value: USERNAME_REGEX,
-              message: 'Username can only contain a-z, 0-9, _',
-            },
-          }}
-        />
+        
         <FormInput
           name="email"
           control={control}
@@ -118,7 +99,7 @@ const SignUpScreen = () => {
           rules={{
             required: 'Password is required',
             minLength: {
-              value: 8,
+              value: 6,
               message: 'Password should be at least 8 characters long',
             },
           }}

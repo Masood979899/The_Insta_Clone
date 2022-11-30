@@ -17,8 +17,13 @@ import {
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
   
+
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+
   type SignInData = {
-    username: string;
+    email: string;
     password: string;
   };
   
@@ -30,17 +35,17 @@ import { AuthContext } from '../../../context/AuthContext';
     const {setUser} =useContext(AuthContext)
     const {control, handleSubmit,reset} = useForm<SignInData>();
   
-    const onSignInPressed = async({username,password}: SignInData) => {
+    const onSignInPressed = async({email,password}: SignInData) => {
       if(loading){
         return
       }
       setLoading(true)
         try {
-            const CognitoUser = await Auth.signIn(username,password)
+            const CognitoUser = await Auth.signIn(email,password)
             setUser(CognitoUser)
         } catch (e) {
           if((e as Error).name === "UserNotConfirmedException"){
-            navigation.navigate('Confirm email',{username})
+            navigation.navigate('Confirm email',{email})
           }else{
             
           Alert.alert("Error..!!!",(e as Error).message)
@@ -73,10 +78,11 @@ import { AuthContext } from '../../../context/AuthContext';
           />
   
           <FormInput
-            name="username"
-            placeholder="Username"
+            name="email"
+            placeholder="Email"
             control={control}
-            rules={{required: 'Username is required'}}
+            rules={{required: 'Email is required'}}
+            
           />
   
           <FormInput

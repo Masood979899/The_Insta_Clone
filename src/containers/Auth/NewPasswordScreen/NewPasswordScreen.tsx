@@ -9,7 +9,7 @@ import {NewPasswordNavigationProp} from '../../../types/types';
 import { Auth } from 'aws-amplify';
 
 type NewPasswordType = {
-  username: string;
+  email: string;
   code: string;
   password: string;
 };
@@ -19,12 +19,12 @@ const NewPasswordScreen = () => {
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation<NewPasswordNavigationProp>();
 
-  const onSubmitPressed = async({username,code,password}: NewPasswordType) => {
+  const onSubmitPressed = async({email,code,password}: NewPasswordType) => {
     if(loading){
       return;
     }setLoading(true)
     try{
-      await Auth.forgotPasswordSubmit(username,code,password);
+      await Auth.forgotPasswordSubmit(email,code,password);
       navigation.navigate("Sign in")
     }
     catch(e)
@@ -44,10 +44,10 @@ const NewPasswordScreen = () => {
         <Text style={styles.title}>Reset your password</Text>
 
         <FormInput
-          placeholder="Username"
-          name="username"
+          placeholder="email"
+          name="email"
           control={control}
-          rules={{required: 'Username is required'}}
+          rules={{required: 'email is required'}}
         />
 
         <FormInput
