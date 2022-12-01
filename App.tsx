@@ -4,7 +4,14 @@ import { Amplify } from 'aws-amplify'
 import config from './src/aws-exports'
 import AuthProvider from './src/context/AuthContext'
 
-Amplify.configure(config)
+
+const updatedconfig={ ...config, oauth:{...config.oauth,
+   redirectSignIn:"instaclone://", 
+   redirectSignOut:"instaclone://",
+  }}
+
+
+Amplify.configure(updatedconfig)
 
 
 

@@ -32,7 +32,7 @@ const EMAIL_REGEX =
     const [loading, setLoading]=useState(false)
     const {height} = useWindowDimensions();
     const navigation = useNavigation<SignInNavigationProp>();
-    const {setUser} =useContext(AuthContext)
+    
     const {control, handleSubmit,reset} = useForm<SignInData>();
   
     const onSignInPressed = async({email,password}: SignInData) => {
@@ -41,8 +41,8 @@ const EMAIL_REGEX =
       }
       setLoading(true)
         try {
-            const CognitoUser = await Auth.signIn(email,password)
-            setUser(CognitoUser)
+          await Auth.signIn(email,password)
+            
         } catch (e) {
           if((e as Error).name === "UserNotConfirmedException"){
             navigation.navigate('Confirm email',{email})
