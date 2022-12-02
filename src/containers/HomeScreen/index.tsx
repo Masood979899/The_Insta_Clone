@@ -1,11 +1,26 @@
-import { View, Text, FlatList, InteractionManager, ViewabilityConfig, ViewToken } from 'react-native'
-import React, { useRef, useState } from 'react'
+import { View, FlatList,  ViewabilityConfig, ViewToken } from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
 import Post from '../../components/Post'
 import post from "../../data/posts.json"
-const Home = () => {
- 
+import { API,graphqlOperation } from 'aws-amplify'
+import { listPosts } from '../../graphql/queries'
 
-const [activePostId,setActivePostId] =useState<string|null>(null)
+
+const Home = () => {
+  // console.log("hello",listPosts)
+  const [activePostId,setActivePostId] =useState<string|null>(null)
+  const [posts, setPosts]=useState(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await API.graphql(graphqlOperation(listPosts));
+      console.log(response.data.listPosts.items);
+      setPosts(response.data.listPosts.items);
+    };
+
+    fetchPosts();
+  }, []);
+
 
   const viewabilityConfig: ViewabilityConfig={
     itemVisiblePercentThreshold:51,
