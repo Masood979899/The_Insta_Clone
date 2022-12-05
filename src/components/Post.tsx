@@ -17,48 +17,69 @@ import ImageCarousel from './ImageCarousel';
 import VideoPlayer from './VideoPlayer';
 import DoublePress from './DoublePress';
 import { useNavigation } from '@react-navigation/native';
+import { Posts } from '../API';
+import { DEFAULT_USER_IMAGE } from '../config';
 
 interface IPostProps {
-  data: IPost;
+  data: Posts;
   isVisible: boolean;
  
 }
 
 const Post = ({data,isVisible}: IPostProps) => {
-
+  console.log("data",data)
   const navigation=useNavigation()
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-
   const onDoublePress = () => {
     setIsLiked(!isLiked);
   };
-  let content = null;
+  let content ;
+ 
   if (data.image) {
     content = (
       <DoublePress onDoublePress={onDoublePress}>
-      <Image
-        source={{uri: data.image}}
+<Image
+        source={{
+          uri: data.image,
+        }}
         style={styles.postimg}
-        resizeMode={'contain'}
       />
       </DoublePress>
+      
     );
   } else if (data.images) {
-    content = 
-    <DoublePress onDoublePress={onDoublePress}>
-    <ImageCarousel 
-    images={data.images} onDoublePress={onDoublePress} />;
-  </DoublePress>
-  } else if(data.video){
-    content = (
-      <DoublePress>
-      <VideoPlayer uri={data.video}
-      paused={!isVisible}
-      />
-    </DoublePress>
-      )
+    content = <ImageCarousel images={data.images} />;
+  } else if (data.video) {
+    content = <VideoPlayer uri={data.video} paused={!isVisible} />;
   }
+  
+  
+  // if (data.image) {
+  //   content = (
+  //     <DoublePress onDoublePress={onDoublePress}>
+  //     <Image
+  //       source={{uri: data.image}}
+  //       style={styles.postimg}
+  //       resizeMode={'contain'}
+  //     />
+  //     </DoublePress>
+  //   );
+  // } else if (data.images) {
+  //   content = 
+  //   <DoublePress onDoublePress={onDoublePress}>
+  //   <ImageCarousel 
+  //   images={data?.images} onDoublePress={onDoublePress} />;
+  // </DoublePress>
+  // } else if(data.video){
+  //   content = (
+  //     <DoublePress>
+  //     <VideoPlayer uri={data.video}
+  //     paused={!isVisible}
+  //     />
+  //   </DoublePress>
+  //     )
+  // }
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
@@ -70,13 +91,13 @@ const Post = ({data,isVisible}: IPostProps) => {
       {/*header*/}
       <View style={styles.header}>
         <TouchableOpacity 
-        onPress={()=>navigation.navigate("ProfileScreen",{
-          userInfo:data?.user,
+        onPress={data.User?()=>navigation.navigate("ProfileScreen",{
+          userInfo:data?.User,
           // image:data?.user,
-        })}
+        }):()=>{}}
         style={{flexDirection:"row",alignItems:"center"}}>
-        <Image source={{uri: data.user.image}} style={styles.img} />
-        <Text style={styles.name}>{data?.user?.username}</Text>
+        <Image source={{uri: data.User?.image || DEFAULT_USER_IMAGE}} style={styles.img} />
+        <Text style={styles.name}>{data?.User?.username}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{marginLeft: 'auto'}}>
           <Entypo
@@ -123,22 +144,21 @@ const Post = ({data,isVisible}: IPostProps) => {
 
       {/*likes */}
       <View style={styles.likes}>
-        <Image source={{uri: data.user.image}} style={styles.avatar} />
+        {/* <Image source={{uri: data.User?.image}} style={styles.avatar} />
         <Image source={{uri: avatar}} style={styles.avatar2} />
-        <Image source={{uri: avatar}} style={styles.avatar3} />
-        <View>
+        <Image source={{uri: avatar}} style={styles.avatar3} /> */}
           <Text>
             Liked by <Text style={styles.name}>mustafa</Text> and{' '}
-            <Text style={styles.name}>{data.nofLikes} others </Text>{' '}
+            <Text style={styles.name}>{data.nOfLikes} others </Text>{' '}
           </Text>
-        </View>
+        
       </View>
 
       {/*description */}
       <View style={styles.comment_area}>
         <Text numberOfLines={isDescriptionExpanded ? 0 : 3}>
           <Text style={{fontWeight: '600', marginLeft: '2.5%',color:"black"}}>
-            {data?.user?.username}
+            {data?.User?.username}
           </Text>
           <Text style={styles.caption}> {data.description}</Text>
         </Text>
@@ -149,20 +169,19 @@ const Post = ({data,isVisible}: IPostProps) => {
 
       {/*Comments */}
       <Text onPress={()=>navigation.navigate("Comments")} style={{color: 'grey', marginTop: '2%', marginLeft: '2%',}}>
-        view all {data.nofComments} comments
+        view all {data.nOfComments} comments
       </Text>
-      {data.comments?.map((comment: any) => (
+      {data.Comments?.items||[]?.map((comment) => (comment&&
         <Comments
-          title={comment.user.username}
-          comment={comment.comment}
           data={comment}
+          key={comment?.id}
         />
       ))}
 
       {/*createdAt*/}
 
       <Text style={{color: 'grey', marginTop: '2%', padding: '2%'}}>
-        13 November 2022
+        {data.createdAt}
       </Text>
     </>
   );

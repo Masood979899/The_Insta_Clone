@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import React, { useState } from 'react'
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { IComment } from '../types/models'
+import { Comments as CommentType } from '../API'
+import { commentsByPostsID } from '../graphql/queries'
+import { DEFAULT_USER_IMAGE } from '../config'
 
 interface ICommentProps{
-  data:IComment
+  data:CommentType
   includeDetail: boolean
 }
 
@@ -23,11 +25,11 @@ const toggleLike=()=>{
     <View style={styles.root}>      
         <View style={styles.comment}>
          {includeDetail&&(<Image
-         source={{uri:avatar}}
+         source={{uri:data.User?.image||DEFAULT_USER_IMAGE}}
          style={styles.avatar}
          />)}
          
-          <Text style={{flex:1} }><Text style={{ fontWeight: "600",color:"black" }}>{data.user.username}{"  "}</Text>
+          <Text style={{flex:1} }><Text style={{ fontWeight: "600",color:"black" }}>{data.User?.username}{"  "}</Text>
             <Text style={{alignItems:"center",color:"black"}}>{data.comment}</Text>
           </Text>
           <TouchableOpacity style={{ marginLeft:"auto"}}

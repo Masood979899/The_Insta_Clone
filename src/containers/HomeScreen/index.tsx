@@ -1,10 +1,53 @@
 import { View, FlatList,  ViewabilityConfig, ViewToken } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import Post from '../../components/Post'
-import post from "../../data/posts.json"
+// import post from "../../data/posts.json"
 import { API,graphqlOperation } from 'aws-amplify'
-import { listPosts } from '../../graphql/queries'
 
+
+export const listPosts = /* GraphQL */ `
+  query ListPosts(
+    $filter: ModelPostsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nOfComments
+        nOfLikes
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        User{
+          id
+          name
+          username
+          image
+        }
+        Comments{
+          items{
+            id
+            comment
+            User{
+              id
+              name
+            }
+          }
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 
 const Home = () => {
   // console.log("hello",listPosts)
@@ -34,7 +77,7 @@ const onViewableItemsChanged= useRef(({viewableItems}:{viewableItems:Array<ViewT
   return (
     <View>
         <FlatList
-        data={post}
+        data={posts}
         // key={post.id}
         renderItem={({item}) => (
           <Post data={item}

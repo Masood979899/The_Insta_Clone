@@ -12,7 +12,7 @@ interface ICarousel {
 const ImageCarousel = ({images,onDoublePress}: ICarousel) => {
   const {width} = useWindowDimensions();
   const [activeImageIndex,setActiveImageIndex] =useState(0);
-  
+  console.log("imggg",images)
 const viewabilityConfig: ViewabilityConfig={
     itemVisiblePercentThreshold:51,
 }
@@ -45,7 +45,7 @@ const onViewableItemsChanged= useRef(({viewableItems}:{viewableItems:Array<ViewT
           bottom: 0,
           width: '100%',
         }}>
-        {images.map((_, index) => (
+        {images?.map((_, index) => (
           <View
             key={index}
             style={{

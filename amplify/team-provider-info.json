@@ -19,7 +19,8 @@
         "instagram8269ed7a": {
           "deploymentBucketName": "amplify-instagram-staging-50045-deployment",
           "s3Key": "amplify-builds/instagram8269ed7a-4776496463656c78682f-build.zip"
-        }
+        },
+        "InstagramPostConfirmation": {}
       },
       "api": {
         "Instagram": {}
