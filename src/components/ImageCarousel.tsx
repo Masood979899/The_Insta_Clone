@@ -12,7 +12,6 @@ interface ICarousel {
 const ImageCarousel = ({images,onDoublePress}: ICarousel) => {
   const {width} = useWindowDimensions();
   const [activeImageIndex,setActiveImageIndex] =useState(0);
-  console.log("imggg",images)
 const viewabilityConfig: ViewabilityConfig={
     itemVisiblePercentThreshold:51,
 }

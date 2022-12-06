@@ -47,10 +47,12 @@ const ProfileHeader = (userInfo?:IProfHeader,) => {
       <Buttons 
       text='Edit Profile'
       onPress={()=>navigation.navigate("EditProfile")}
+      inline
       />
       <Buttons
     text='Sign out'
     onPress={()=>Auth.signOut()}
+    inline
     />
       </View>
       </View>

@@ -2,7 +2,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import React, { useState } from 'react'
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { Comments as CommentType } from '../API'
-import { commentsByPostsID } from '../graphql/queries'
 import { DEFAULT_USER_IMAGE } from '../config'
 
 interface ICommentProps{

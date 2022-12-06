@@ -4,12 +4,20 @@ import user from '../../data/user.json'
 import ProfileHeader from '../../components/ProfileHeader'
 import FeedGridView from '../../components/FeedGridView'
 import { useNavigation } from '@react-navigation/native'
+import { useQuery } from '@apollo/client'
+import { getUser } from './queries'
+
+
 const Profile = ({route}) => {
   
   const navigation =  useNavigation()
+  navigation.setOptions({title:userInfo?.username||user.username})
   const userInfo =route ? route?.params?.userInfo : user;
   console.log("profile",route)
-  navigation.setOptions({title:userInfo?.username||user.username})
+  const {data, loading,error}=useQuery(getUser)
+  
+  
+  
   return (
     <View style={styles.container}>
       <FeedGridView

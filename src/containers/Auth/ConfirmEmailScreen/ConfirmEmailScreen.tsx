@@ -28,6 +28,8 @@ const ConfirmEmailScreen = () => {
 const [loading, setLoading] = useState(false)
   const navigation = useNavigation<ConfirmEmailNavigationProp>();
   const email=watch("email")
+  
+  
   const onConfirmPressed = async({email,code}: ConfirmEmailData) => {
     if(loading){
       return;

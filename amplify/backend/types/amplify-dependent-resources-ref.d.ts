@@ -13,11 +13,11 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "function": {
-        "instagram8269ed7a": {
+        "InstagramPostConfirmation": {
             "Name": "string",
             "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
+            "LambdaExecutionRole": "string",
+            "Region": "string"
         }
     },
     "api": {

@@ -27,7 +27,6 @@ interface IPostProps {
 }
 
 const Post = ({data,isVisible}: IPostProps) => {
-  console.log("data",data)
   const navigation=useNavigation()
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -55,31 +54,7 @@ const Post = ({data,isVisible}: IPostProps) => {
   }
   
   
-  // if (data.image) {
-  //   content = (
-  //     <DoublePress onDoublePress={onDoublePress}>
-  //     <Image
-  //       source={{uri: data.image}}
-  //       style={styles.postimg}
-  //       resizeMode={'contain'}
-  //     />
-  //     </DoublePress>
-  //   );
-  // } else if (data.images) {
-  //   content = 
-  //   <DoublePress onDoublePress={onDoublePress}>
-  //   <ImageCarousel 
-  //   images={data?.images} onDoublePress={onDoublePress} />;
-  // </DoublePress>
-  // } else if(data.video){
-  //   content = (
-  //     <DoublePress>
-  //     <VideoPlayer uri={data.video}
-  //     paused={!isVisible}
-  //     />
-  //   </DoublePress>
-  //     )
-  // }
+  
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);

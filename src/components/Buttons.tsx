@@ -6,19 +6,18 @@ import { useNavigation } from '@react-navigation/native'
 interface IButtons{
     text?: string,
     onPress?:()=>void,
+    inline?:boolean,
 }
 
 
-const Buttons = ({text="",onPress}:IButtons) => {
+const Buttons = ({text="",onPress=()=>{}, inline= false}:IButtons) => {
 
   const navigation= useNavigation()
 
   return (
     <TouchableOpacity
-    
-    style={styles.btn}
+    style={[styles.btn,inline?{flex:1}:{}]}
     onPress={onPress}
-
 >
       <Text style={{color:"black",fontWeight:"600"}}>{text}</Text>
     </TouchableOpacity>
@@ -28,7 +27,7 @@ const Buttons = ({text="",onPress}:IButtons) => {
 
 const styles = StyleSheet.create({
     btn:{
-        flex:1,
+  
         backgroundColor:"white",
         padding:"3%",
         borderRadius:5,
