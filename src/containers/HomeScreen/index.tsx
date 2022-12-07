@@ -10,7 +10,7 @@ const Home = () => {
   
   const [activePostId,setActivePostId] =useState<string|null>(null)
   
-  const {data, loading, error}= useQuery<ListPostsQuery, ListPostsQueryVariables>(listPosts);
+  const {data, loading, error,refetch}= useQuery<ListPostsQuery, ListPostsQueryVariables>(listPosts);
 
   const viewabilityConfig: ViewabilityConfig={
     itemVisiblePercentThreshold:51,
@@ -27,7 +27,7 @@ if (loading){
   return<ActivityIndicator/>
 }
 if(error){
-  return<ApiErrorMessage title={"Error fetching posts"} message={error.message} />
+  return<ApiErrorMessage title={"Error fetching posts"} message={error.message} onRetry={()=>refetch()}/>
 }
 
  

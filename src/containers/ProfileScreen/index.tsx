@@ -1,89 +1,122 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
-import React from 'react'
-import user from '../../data/user.json'
-import ProfileHeader from '../../components/ProfileHeader'
-import FeedGridView from '../../components/FeedGridView'
-import { useNavigation } from '@react-navigation/native'
-import { useQuery } from '@apollo/client'
-import { getUser } from './queries'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import React, { useContext } from "react";
+import ProfileHeader from "../../components/ProfileHeader";
+import FeedGridView from "../../components/FeedGridView";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useQuery } from "@apollo/client";
+import { getUser } from "./queries";
+import {
+  MyProfileRouteProp,
+  ProfileNavigationProp,
+  UserProfileNavigationProp,
+  UserProfileRouteProp,
+} from "../../types/types";
+import ApiErrorMessage from "../ApiErrorMessage";
+import { GetUserQuery, GetUserQueryVariables } from "../../API";
+import { AuthContext } from "../../context/AuthContext";
 
+const Profile = () => {
+  const route = useRoute<UserProfileRouteProp | MyProfileRouteProp>();
+  const navigation = useNavigation<
+    UserProfileNavigationProp | MyProfileRouteProp
+  >();
 
-const Profile = ({route}) => {
-  
-  const navigation =  useNavigation()
-  navigation.setOptions({title:userInfo?.username||user.username})
-  const userInfo =route ? route?.params?.userInfo : user;
-  console.log("profile",route)
-  const {data, loading,error}=useQuery(getUser)
-  
-  
-  
+  const {userId: authUserId} = useContext(AuthContext);
+
+  const userId = route?.params?.userId || authUserId;
+
+  // navigation.setOptions({title:userInfo?.username||user.username})
+
+  console.log("profile", authUserId);
+  const { data, loading, error, refetch } = useQuery<
+    GetUserQuery | GetUserQueryVariables
+  >(getUser, { variables: { id: userId } });
+
+  const user = data?.getUser || authUserId;
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error || !user) {
+    return (
+      <ApiErrorMessage
+        title="Error fetching the user"
+        message={error?.message || "User not found"}
+        onRetry={()=>refetch()}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FeedGridView
-      data={user.posts}
-      listHeaderComponent={ProfileHeader(userInfo)}
+        data={user?.Posts?.items || []}
+        ListHeaderComponent={() => <ProfileHeader user={user} />}
+        refetch={refetch }
+        loading={loading}
       />
-
-
     </View>
-  )
-}
+  );
+};
 
-
-const styles =  StyleSheet.create({
-  container:{
-flex:1,
-padding:"5%",
-paddingTop:"10%"
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: "5%",
+    paddingTop: "10%",
   },
-  header:{
-    flexDirection:"row",
+  header: {
+    flexDirection: "row",
     // padding:"2%",
-    alignItems:"center",
-    justifyContent:"space-between",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  image:{
-    width:"30%",
-    aspectRatio:1,
-    borderRadius:50
+  image: {
+    width: "30%",
+    aspectRatio: 1,
+    borderRadius: 50,
   },
-  number:{
-    color:"black",
-    fontWeight:"bold",
-    fontSize:16
+  number: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 16,
   },
-  title:{
-    color:"black",
-    fontSize:16,
-    fontWeight:"300"
+  title: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "300",
   },
   txtArea: {
-    alignItems:"center"
+    alignItems: "center",
   },
-  username:{
-    color:"black",
-    fontWeight:"bold",
-    fontSize:15
-  },bio:{
-  color:"black",
+  username: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  btn_header:{
-    marginVertical:"4%",
-    flexDirection:"row",
-    alignItems:"center",
-    // justifyContent:"space-evenly"
+  bio: {
+    color: "black",
   },
-  btn:{
-    backgroundColor:"white",
-    padding:"3%",
-    borderRadius:16,
-    elevation:20,
-    marginHorizontal:"10%"
-  }
+  btn_header: {
+    marginVertical: "4%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  btn: {
+    backgroundColor: "white",
+    padding: "3%",
+    borderRadius: 16,
+    elevation: 20,
+    marginHorizontal: "10%",
+  },
+});
 
-
-
-})
-
-export default Profile
+export default Profile;

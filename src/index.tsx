@@ -111,7 +111,7 @@ const Navigation = () => {
   return (
     
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Navigator screenOptions={{header:CustomHeader}}>
       {!user?(
         <Stack.Screen  name="AppStack" component={AppStack}
         />

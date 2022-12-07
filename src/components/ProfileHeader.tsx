@@ -1,49 +1,56 @@
 
 import { View, Text, StyleSheet, Image, } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Buttons from './Buttons'
-import user from '../data/user.json'
 import { useNavigation } from '@react-navigation/native'
 import {Auth} from 'aws-amplify'
+import { User } from '../API'
+import { DEFAULT_USER_IMAGE } from '../config'
+import { AuthContext } from '../context/AuthContext'
 
 
 interface IProfHeader{
-  userInfo?:object
+  user?:User
 }
 
 
-const ProfileHeader = (userInfo?:IProfHeader,) => {
+const ProfileHeader = ({user}:IProfHeader,) => {
   
    const navigation= useNavigation();
+  const {userId}=useContext(AuthContext);
+   
 
+  // console.log(user?.Posts?.items.length)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-        source={{uri:userInfo? userInfo?.image:user?.image}}
+        source={{uri:user?.image || DEFAULT_USER_IMAGE}}
         style={styles.image}
         />
 
         <View style={styles.txtArea}>
-          <Text style={styles.number}>98</Text>
+          <Text style={styles.number}>{user?.Posts?.items.length}</Text>
           <Text style={styles.title}>Posts</Text>
         </View>
         <View style={styles.txtArea}>
-          <Text style={styles.number}>1998</Text>
+          <Text style={styles.number}>{user?.nOfFollowers || 0}</Text>
           <Text style={styles.title}>Followers</Text>
         </View>
         <View style={styles.txtArea}>
-          <Text style={styles.number}>998</Text>
+          <Text style={styles.number}>{user?.nOfFollowing || 0}</Text>
           <Text style={styles.title}>Following</Text>
         </View>
       </View>
       <View>
         
-      <Text style={styles.username}>{userInfo? userInfo?.username: "Masood"}</Text>
+      <Text style={styles.username}>{user?.username || user?.name}</Text>
 
-      <Text style={styles.bio}>{user.bio}</Text>
+      <Text style={styles.bio}
+      numberOfLines={3}
+      >{user?.bio}</Text>
       </View>
-      <View style={{flexDirection:"row"}}>
+      {userId==user?.id && (<View style={{flexDirection:"row"}}>
       <Buttons 
       text='Edit Profile'
       onPress={()=>navigation.navigate("EditProfile")}
@@ -54,7 +61,8 @@ const ProfileHeader = (userInfo?:IProfHeader,) => {
     onPress={()=>Auth.signOut()}
     inline
     />
-      </View>
+      </View> )}
+      
       </View>
   )
 }
@@ -93,6 +101,7 @@ const styles =  StyleSheet.create({
     fontSize:15
   },bio:{
   color:"black",
+  
   },
   btn_header:{
     marginVertical:"4%",

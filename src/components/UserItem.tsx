@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { isCompositeType } from 'graphql'
+import { DEFAULT_USER_IMAGE } from '../config'
 
 interface IUserItem{
 data:object
@@ -8,16 +10,16 @@ data:object
 
 
 const UserItem = ({data}:IUserItem) => {
-    // console.log(data.id)
+    // console.log(data)
 
 const navigation= useNavigation()
 
   return (
     <TouchableOpacity 
-    onPress={()=>navigation.navigate("ProfileScreen",{userId:data.id})}
+    onPress={()=>navigation.navigate("ProfileScreen",{userId:data?.id})}
     style={styles.container} >
       <Image
-      source={{uri:data.image}}
+      source={{uri:data?.image|| DEFAULT_USER_IMAGE}}
       style={styles.image}
       
       />

@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  useWindowDimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,7 +11,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Comments from './Comments';
-import {IPost} from '../types/models';
 import ImageCarousel from './ImageCarousel';
 import VideoPlayer from './VideoPlayer';
 import DoublePress from './DoublePress';
@@ -54,21 +52,22 @@ const Post = ({data,isVisible}: IPostProps) => {
   }
   
   
-  
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
   const avatar =
     'https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png';
-  return (
+  
+
+  
+    return (
     <>
       {/*header*/}
       <View style={styles.header}>
         <TouchableOpacity 
         onPress={data.User?()=>navigation.navigate("ProfileScreen",{
-          userInfo:data?.User,
-          // image:data?.user,
+          userId:data?.User?.id,
         }):()=>{}}
         style={{flexDirection:"row",alignItems:"center"}}>
         <Image source={{uri: data.User?.image || DEFAULT_USER_IMAGE}} style={styles.img} />

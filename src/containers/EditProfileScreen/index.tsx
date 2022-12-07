@@ -1,10 +1,14 @@
-import { View, Text, Image, TextInput, StyleSheet, Alert } from 'react-native'
-import React from 'react'
-import user from "../../data/user.json"
+import { View, Text, Image, TextInput, StyleSheet, Alert, ActivityIndicator } from 'react-native'
+import React, { useContext } from 'react'
+
 import colors from '../../theme/colors'
 import fonts from '../../theme/fonts'
 import { useForm,Control,Controller } from "react-hook-form";
 import { IUser } from '../../types/models'
+import { useQuery } from '@apollo/client'
+import { getUser } from '../ProfileScreen/queries'
+import ApiErrorMessage from '../ApiErrorMessage'
+import { AuthContext } from '../../context/AuthContext'
 
 type IEditableUserFields="name" | "username" |"bio"|"website";
 type IEditableUser=Pick<IUser,IEditableUserFields>;
@@ -61,7 +65,25 @@ const EditProfileScreen = () => {
         // Alert.alert("submited",data)
         console.log(data)
     }
-    
+    const {userId}=useContext(AuthContext)
+
+    const {data,loading, error}= useQuery(getUser, { variables: { id: userId } })
+
+    if(loading){
+        return<ActivityIndicator/>
+    }
+    if(error){
+        return(
+            <ApiErrorMessage
+            title="Something Went Wroong...!"
+            message={error.message}
+            />
+        )
+    }
+
+    const user = data?.getUser;
+    console.log(user)
+
     return (
     <View style={styles.page}>
       <Image
@@ -100,7 +122,7 @@ const EditProfileScreen = () => {
     rules={{required:"bio is required",maxLength:{
         value:200,
         message:"Bio must be less than 200 characters"}}}
-    name='Bio'
+    name={user.bio}
     />
       <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>Submit</Text>    
     

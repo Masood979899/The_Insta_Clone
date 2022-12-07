@@ -3,9 +3,9 @@ import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
-import {NewPasswordNavigationProp} from '../../../types/types';
+import {ConfirmEmailRouteProp, NewPasswordNavigationProp} from '../../../types/types';
 import { Auth } from 'aws-amplify';
 
 type NewPasswordType = {
@@ -15,10 +15,14 @@ type NewPasswordType = {
 };
 
 const NewPasswordScreen = () => {
-  const {control, handleSubmit} = useForm<NewPasswordType>();
+  
+  const route = useRoute();
+  const {control, handleSubmit} = useForm<NewPasswordType>({
+    defaultValues: {email: route.params.email},
+  });
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation<NewPasswordNavigationProp>();
-
+  
   const onSubmitPressed = async({email,code,password}: NewPasswordType) => {
     if(loading){
       return;

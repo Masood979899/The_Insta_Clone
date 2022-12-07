@@ -24,7 +24,7 @@ const ForgotPasswordScreen = () => {
       const response = await Auth.forgotPassword(email);
       Alert.alert('check your email',`The code has been sent to ${response.CodeDeliveryDetails.Destinations}`,)
       
-      navigation.navigate("New password")
+      navigation.navigate("New password",{email})
     }
     catch(e)
 {

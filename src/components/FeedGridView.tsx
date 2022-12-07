@@ -1,37 +1,34 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React from 'react'
-import { IPost } from '../types/models';
-import FeedGridItem from './FeedGridItem';
+import { View, Text, FlatList, Image } from "react-native";
+import React from "react";
+import { IPost } from "../types/models";
+import FeedGridItem from "./FeedGridItem";
+import { Posts } from "../API";
 
+interface IfeedGrid {
+  data: (Posts | null)[];
+  ListHeaderComponent?:
+    | React.ComponentType<any>
+    | React.ReactElement
+    | null
+    | undefined;
 
-interface IfeedGrid{
-    data: IPost;
-    
+  refetch: ()=>void;
+  loading: boolean;
 }
 
-
-const FeedGridView = ({data,listHeaderComponent}:IfeedGrid) => {
- 
+const FeedGridView = ({ data, ListHeaderComponent,refetch, loading }: IfeedGrid) => {
   return (
-
     <FlatList
-        data={data}
-        // key={post.id}
-        renderItem={({item}) => 
-        <FeedGridItem
-        post={item}
-        
-        />
-          }
-          numColumns={3}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={listHeaderComponent}
+      data={data}
+      // key={post.id}
+      renderItem={({ item }) =>item && <FeedGridItem post={item} />}
+      numColumns={3}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={ListHeaderComponent}
+      onRefresh={refetch}
+      refreshing={loading}
+    />
+  );
+};
 
-        
-        />
-    
-    
-  )
-}
-
-export default FeedGridView
+export default FeedGridView;

@@ -13,17 +13,17 @@ export type BottomTabNavigatorParamList = {
   Search: undefined;
   Upload: undefined;
   Notifications: undefined;
-  MyProfile: undefined;
+  ProfileScreen: undefined;
 };
 
 export type MyProfileNavigationProp = BottomTabNavigationProp<
   BottomTabNavigatorParamList,
-  'MyProfile'
+  'ProfileScreen'
 >;
 
 export type MyProfileRouteProp = RouteProp<
   BottomTabNavigatorParamList,
-  'MyProfile'
+  'ProfileScreen'
 >;
 
 export type HomeStackNavigatorParamList = {
@@ -48,7 +48,7 @@ export type FeedNavigationProp = NativeStackNavigationProp<
 
 export type ProfileStackNavigatorParamList = {
   Profile: undefined;
-  'Edit Profile': undefined;
+  'EditProfile': undefined;
 };
 
 export type ProfileNavigationProp = NativeStackNavigationProp<
