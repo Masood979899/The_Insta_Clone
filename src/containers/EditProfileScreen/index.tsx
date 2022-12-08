@@ -1,172 +1,279 @@
-import { View, Text, Image, TextInput, StyleSheet, Alert, ActivityIndicator } from 'react-native'
-import React, { useContext } from 'react'
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 
-import colors from '../../theme/colors'
-import fonts from '../../theme/fonts'
-import { useForm,Control,Controller } from "react-hook-form";
-import { IUser } from '../../types/models'
-import { useQuery } from '@apollo/client'
-import { getUser } from '../ProfileScreen/queries'
-import ApiErrorMessage from '../ApiErrorMessage'
-import { AuthContext } from '../../context/AuthContext'
+import colors from "../../theme/colors";
+import fonts from "../../theme/fonts";
+import { useForm, Control, Controller } from "react-hook-form";
+import { IUser } from "../../types/models";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { deleteUser, getUser, usersByUsername } from "../EditProfileScreen/queries";
+import ApiErrorMessage from "../ApiErrorMessage";
+import { AuthContext } from "../../context/AuthContext";
+import { Asset, launchImageLibrary } from "react-native-image-picker";
+import { updateUser } from "./mutation";
+import {
+  DeleteUserInput,
+  DeleteUserMutation,
+  DeleteUserMutationVariables,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+  UsersByUsernameQuery,
+  UsersByUsernameQueryVariables,
+} from "../../API";
+import { useNavigation } from "@react-navigation/native";
+import { Auth } from "aws-amplify";
+import CustomInput from "./customInput";
+// import CustomInput from './customInput'
 
-type IEditableUserFields="name" | "username" |"bio"|"website";
-type IEditableUser=Pick<IUser,IEditableUserFields>;
+type IEditableUserFields = "name" | "username" | "bio" | "website" | "image";
+type IEditableUser = Pick<IUser, IEditableUserFields>;
 const URL_REGEX =
-/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
-interface ICustomInput{
-    label:string;
-    multiline?:boolean;
-    control:Control<IEditableUser>;
-    name: string
-    rules?:object; 
+interface ICustomInput {
+  label: string;
+  multiline?: boolean;
+  control: Control<IEditableUser>;
+  name: string;
+  rules?: object;
+}
+
+const EditProfileScreen = () => {
+  const navigation = useNavigation();
+  const { userId, user: authUser } = useContext(AuthContext);
+  const { control, handleSubmit, setValue } = useForm<IEditableUser>();
+  const [selectedPhoto, setSelectedPhoto] = useState<null | Asset >(null);
+  const { data, loading, error } = useQuery(getUser, {
+    variables: { id: userId },
+  });
+
+  const user = data?.getUser;
+  console.log(user);
+
+ const [getUsersByUsername]=useLazyQuery<UsersByUsernameQuery | UsersByUsernameQueryVariables>(usersByUsername)
+ 
+  const [doUpdateUser, { loading: updateLoading, error: updateError }] =
+    useMutation<UpdateUserMutation | UpdateUserMutationVariables>(updateUser);
+  const [doDelete, { loading: deleteLoading, error: deleteError }] =
+    useMutation<DeleteUserMutation | DeleteUserMutationVariables>(deleteUser);
+  useEffect(() => {
+    if (user) {
+      setValue("name", user.name);
+      setValue("username", user.username);
+      setValue("bio", user.bio);
+      setValue("website", user.website);
+      setValue("image", user.image);
+    }
+}, [user, setValue]);
+
+const onSubmit = async (formData: IEditableUser) => {
+    // Alert.alert("submited",data)
+    
+    await doUpdateUser({
+      variables: {
+        input: { id: userId, ...formData, _version: user?._version },
+      },
+    });
+    navigation.goBack();
+  };
+  const onChangePhoto = () => {
+    launchImageLibrary(
+      { mediaType: "photo" },
+      ({ didCancel, errorCode, assets }) => {
+        if (!didCancel && !errorCode && assets && assets.length > 0) {
+          setSelectedPhoto(assets[0]);
+        }
+      }
+    );
+  };
+
+
+
+
+const validateUsername = async (username:string)=>{
+
+  try {
+      const response= await getUsersByUsername({variables:{username}});
+      console.log("chk",response)
+      if(response.error){
+          Alert.alert('Failed to fetch username');
+          return 'Failed to fetch username';
+      }
+      const users = response.data?.usersByUsername?.items;
+      if(users && users.length >0 && users?.[0]?.id !== userId){
+          return 'Username is already taken';
+      }
+  } catch (e) {
+Alert.alert('Failed to fetch username')
+}
+return true;
 
 }
 
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error || updateError || deleteError) {
+    return (
+      <ApiErrorMessage
+        title="Something Went Wroong...!"
+        message={error?.message || updateError?.message || deleteError?.message}
+      />
+    );
+  }
 
 
-const CustomInput=({control,name,label,multiline=false,rules}:ICustomInput)=>(
+  
+  const onDeletePress = () => {
+    Alert.alert("Are You Sure ", "Deleting your user profile is peramnent", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: startDelete,
+      },
+    ]);
+  };
+  const startDelete = async () => {
+    if (!user) {
+      return;
+    }
+    /** Delete from DB**/
+    await doDelete({
+      variables: { input: { id: userId, _version: user?._version } },
+    });
+    /**Delete from cognito */
+    authUser?.deleteUser((err) => {
+      if (err) {
+        console.log(err);
+      }
+      Auth.signOut();
+    });
+  };
 
-    <Controller
-    control={control}
-    rules={rules}
-    name={name}
-    render={({field:{onChange,value,onBlur},fieldState:{error}})=>(
-        <View style={styles.inputContainer}>
-        <Text style={styles.label}>{label}</Text>
-        <View style={{flex:1}}>
-        <TextInput
-        value={value}
-        onChangeText={onChange}
-        onBlur={onBlur}
-        placeholder={label}
-        placeholderTextColor={"grey"}
-        style={[styles.input,
-        {borderColor:error?"red":"grey"}
-        ]}
-        multiline={multiline}
-        />
-        {error && (<Text style={{color:"red"}}>{error.message|| "Error"}</Text>)}
-        </View>
-        
-    </View>
-    )}
-    />
-    )
   
 
 
-
-const EditProfileScreen = () => {
-    
-    const {control,handleSubmit} = useForm<IEditableUser>();
-    const onSubmit=(data:IEditableUser)=>{
-        // Alert.alert("submited",data)
-        console.log(data)
-    }
-    const {userId}=useContext(AuthContext)
-
-    const {data,loading, error}= useQuery(getUser, { variables: { id: userId } })
-
-    if(loading){
-        return<ActivityIndicator/>
-    }
-    if(error){
-        return(
-            <ApiErrorMessage
-            title="Something Went Wroong...!"
-            message={error.message}
-            />
-        )
-    }
-
-    const user = data?.getUser;
-    console.log(user)
-
-    return (
+  return (
     <View style={styles.page}>
       <Image
-      source={{uri:user.image}}
-      style={styles.avatar}
+        source={{ uri: selectedPhoto?.uri || user.image }}
+        style={styles.avatar}
       />
-      <Text style={styles.textButton}>Change Profile Photo</Text>    
-    
-    <CustomInput
-    label="Name"
-    name='name'
-    control={control}
-    rules={{required:"name is required", minLength:{
-        value:3,
-        message:"name must be at least 3 characters"}}}
-    />
-    <CustomInput
-    label="Username"
-    control={control}
-    name='username'
-    rules={{required:"username is required"}}
+      <Text onPress={onChangePhoto} style={styles.textButton}>
+        Change Profile Photo
+      </Text>
 
-    />
-    <CustomInput
-    label="Website"
-    control={control}
-    rules={{pattern:{
-        value:URL_REGEX,
-        message:"Invalid url"}}}
-    name='website'
-    />
-    <CustomInput
-    label="Bio"
-    multiline
-    control={control}
-    rules={{required:"bio is required",maxLength:{
-        value:200,
-        message:"Bio must be less than 200 characters"}}}
-    name={user.bio}
-    />
-      <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>Submit</Text>    
+      <CustomInput
+        label="Name"
+        name="name"
+        control={control}
+        rules={{
+          required: "name is required",
+          minLength: {
+            value: 3,
+            message: "name must be at least 3 characters",
+          },
+        }}
+      />
+      <CustomInput
+        label="Username"
+        control={control}
+        name="username"
+        rules={{ required: "username is required",
+        validate:validateUsername,
+        minLength: {
+            value: 3,
+            message: "name must be at least 3 characters",
+        },
+        
     
+    }}
+      />
+      <CustomInput
+        label="Website"
+        control={control}
+        rules={{
+          pattern: {
+            value: URL_REGEX,
+            message: "Invalid url",
+          },
+        }}
+        name="website"
+      />
+      <CustomInput
+        label="Bio"
+        multiline
+        control={control}
+        rules={{
+          required: "bio is required",
+          maxLength: {
+            value: 200,
+            message: "Bio must be less than 200 characters",
+          },
+        }}
+        name="bio"
+      />
+      <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
+        {updateLoading ? "Submitting...!!" : "Submit"}
+      </Text>
+      <Text
+        onPress={handleSubmit(onDeletePress)}
+        style={styles.textDeleteButton}
+      >
+        {deleteLoading ? "Deleting...!!" : "Delete"}
+      </Text>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
+  page: {
+    alignItems: "center",
+    padding: "12%",
+  },
+  avatar: {
+    width: "30%",
+    aspectRatio: 1,
+    borderRadius: 100,
+  },
+  textButton: {
+    color: colors.primary,
+    fontSize: 16,
+    fontWeight: fonts.weight.semi,
+    margin: "8%",
+  },
+  textDeleteButton: {
+    color: "red",
+    fontSize: 16,
+    fontWeight: fonts.weight.semi,
+    margin: "8%",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "stretch",
+    marginBottom: "8%",
+  },
+  label: {
+    width: "25%",
+    color: "grey",
+  },
+  input: {
+    borderColor: "grey",
+    borderBottomWidth: 1,
+  },
+});
 
-page:{
-    alignItems:"center",
-    padding:"12%"
-},
-avatar:{
-    width:"30%",
-    aspectRatio:1,
-    borderRadius:100
-},
-textButton:{
-    color:colors.primary,
-    fontSize:16,
-    fontWeight:fonts.weight.semi,
-    margin:"8%"
-},
-inputContainer:{
-    flexDirection:"row",
-    alignItems:"center",
-    alignSelf:"stretch",
-    marginBottom:"8%"
-},
-label:{
-    width:"25%",
-    color:"grey",
-    
-},
-input:{
-
-    borderColor:"grey",
-    borderBottomWidth:1,
-}
-
-
-
-})
-
-
-export default EditProfileScreen
+export default EditProfileScreen;

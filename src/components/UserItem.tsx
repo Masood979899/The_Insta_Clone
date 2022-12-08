@@ -24,8 +24,8 @@ const navigation= useNavigation()
       
       />
       <View>
-      <Text style={styles.name}>{data.name}</Text>  
-      <Text style={styles.username}>{data.username}</Text>
+      <Text style={styles.name}>{data?.name}</Text>  
+      <Text style={styles.username}>{data?.username}</Text>
       </View>
       
     </TouchableOpacity>
