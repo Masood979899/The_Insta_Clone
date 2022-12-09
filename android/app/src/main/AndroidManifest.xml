@@ -12,6 +12,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="instaclone"/>
       </intent-filter>
+      
     </activity>
   </application>
 </manifest>

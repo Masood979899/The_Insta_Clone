@@ -20,7 +20,6 @@ import { AuthContext } from "../../context/AuthContext";
 import { Asset, launchImageLibrary } from "react-native-image-picker";
 import { updateUser } from "./mutation";
 import {
-  DeleteUserInput,
   DeleteUserMutation,
   DeleteUserMutationVariables,
   UpdateUserMutation,
@@ -31,6 +30,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
 import CustomInput from "./customInput";
+import { DEFAULT_USER_IMAGE } from "../../config";
 // import CustomInput from './customInput'
 
 type IEditableUserFields = "name" | "username" | "bio" | "website" | "image";
@@ -82,7 +82,8 @@ const onSubmit = async (formData: IEditableUser) => {
         input: { id: userId, ...formData, _version: user?._version },
       },
     });
-    navigation.goBack();
+    if(navigation.canGoBack()){
+    navigation.goBack()}
   };
   const onChangePhoto = () => {
     launchImageLibrary(
@@ -168,7 +169,7 @@ return true;
   return (
     <View style={styles.page}>
       <Image
-        source={{ uri: selectedPhoto?.uri || user.image }}
+        source={{ uri: selectedPhoto?.uri || user.image ||DEFAULT_USER_IMAGE}}
         style={styles.avatar}
       />
       <Text onPress={onChangePhoto} style={styles.textButton}>

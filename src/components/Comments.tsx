@@ -9,7 +9,7 @@ interface ICommentProps{
   includeDetail: boolean
 }
 
-const avatar="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
+// const avatar="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
 
 const Comments = ({data,includeDetail=false}:ICommentProps) => {
 

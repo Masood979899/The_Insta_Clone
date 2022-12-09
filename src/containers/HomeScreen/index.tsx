@@ -35,7 +35,9 @@ if(error){
     <View>
         <FlatList
         data={posts}
-        renderItem={({item}) => (
+        onRefresh={()=>refetch()}
+        refreshing={loading}
+        renderItem={({item}) => ( 
           <Post data={item}
            key={item.id}
            isVisible={activePostId==item.id}

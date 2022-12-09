@@ -4,5 +4,6 @@ import Profile from "./ProfileScreen";
 import EditProfileScreen from "./EditProfileScreen";
 import PostUploadScreen from "./PostUploadScreen";
 import UsersScreen from "./UsersScreen";
+import CreatePost from "./CreatePostScreen";
 
-export {Home,CommentScreen,Profile,EditProfileScreen,PostUploadScreen,UsersScreen}  
+export {Home,CommentScreen,Profile,EditProfileScreen,PostUploadScreen,UsersScreen,CreatePost}  

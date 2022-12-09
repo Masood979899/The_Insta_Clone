@@ -19,6 +19,7 @@ const ProfileHeader = ({user}:IProfHeader,) => {
    const navigation= useNavigation();
   const {userId}=useContext(AuthContext);
    
+  navigation.setOptions({title:user?.username || "Profile"})
 
   // console.log(user?.Posts?.items.length)
   return (
