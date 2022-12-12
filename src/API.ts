@@ -329,6 +329,16 @@ export enum ModelSortDirection {
 }
 
 
+export type ModelIDKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
 export type ModelCommentsFilterInput = {
   id?: ModelIDInput | null,
   comment?: ModelStringInput | null,
@@ -1841,16 +1851,17 @@ export type LikesByUserIDQuery = {
   } | null,
 };
 
-export type LikesByPostsIDQueryVariables = {
+export type LikesForPostByUserQueryVariables = {
   postsID: string,
+  userID?: ModelIDKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelLikesFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type LikesByPostsIDQuery = {
-  likesByPostsID?:  {
+export type LikesForPostByUserQuery = {
+  LikesForPostByUser?:  {
     __typename: "ModelLikesConnection",
     items:  Array< {
       __typename: "Likes",

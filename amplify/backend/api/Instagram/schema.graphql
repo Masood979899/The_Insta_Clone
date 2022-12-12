@@ -2,7 +2,7 @@ type Likes @model @auth(rules: [{allow: public}]) {
   id: ID!
   untitledfield: String
   userID: ID! @index(name: "byUser")
-  postsID: ID! @index(name: "byPosts")
+  postsID: ID! @index(name: "byPosts",queryField:"LikesForPostByUser", sortKeyFields:["userID"])
   
   User: User @belongsTo (fields:["userID"])
   Posts: Posts @belongsTo (fields:["postsID"])

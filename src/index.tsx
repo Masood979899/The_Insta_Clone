@@ -8,8 +8,10 @@ import {
   CreatePost,
   EditProfileScreen,
   Home,
+  PostLikeScreen,
   PostUploadScreen,
   Profile,
+  UpdatePostScreen,
 } from "./containers";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SearchStack from "./SearchStack";
@@ -40,6 +42,10 @@ const HomeStack = () => {
       {/* <Stack.Screen name="PostUploadScreen" component={PostUploadScreen}/> */}
       <Stack.Screen name="ProfileScreen" component={Profile} />
       <Stack.Screen name="createPost" component={CreatePost} />
+      <Stack.Screen name="UpdatePost" component={UpdatePostScreen} options={{title:"Update Post"}}/>
+      <Stack.Screen name="PostLikes" component={PostLikeScreen} options={{title:"All Likes"}}/>
+      
+      
 
     </Stack.Navigator>
   );

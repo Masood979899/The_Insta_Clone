@@ -302,11 +302,11 @@ PODS:
   - React-jsinspector (0.70.4)
   - React-logger (0.70.4):
     - glog
-  - react-native-image-picker (4.10.2):
+  - react-native-image-picker (4.10.1):
     - React-Core
-  - react-native-netinfo (9.3.7):
+  - react-native-netinfo (9.3.6):
     - React-Core
-  - react-native-pager-view (6.1.2):
+  - react-native-pager-view (6.1.1):
     - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
@@ -627,9 +627,9 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 4a893fc8f683b91befcaf56c44ad8be4506b6828
   React-jsinspector: 1d5a9e84e419a57cabc23249aec3d837d1b03a80
   React-logger: f8071ad48248781d5afdb8a07f778758529d3019
-  react-native-image-picker: bf34f3f516d139ed3e24c5f5a381a91819e349ea
-  react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
-  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
+  react-native-image-picker: f2ab1215d17bcfe27b0eb6417cc236fd1f4775e7
+  react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
+  react-native-pager-view: 3c66c4e2f3ab423643d07b2c7041f8ac48395f72
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   React-perflogger: 5e41b01b35d97cc1b0ea177181eb33b5c77623b6

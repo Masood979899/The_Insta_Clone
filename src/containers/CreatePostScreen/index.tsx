@@ -6,45 +6,72 @@ import { CreatePostsMutation, CreatePostsMutationVariables } from "../../API";
 import { createPosts } from "./queries";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
+import ImageCarousel from "../../components/ImageCarousel";
+import VideoPlayer from "../../components/VideoPlayer";
 
 const CreatePost = ({ route }) => {
-  const navigation= useNavigation()
-  const {userId}=useContext(AuthContext)
-    const [description, setDescription] = useState("");
-  
-  const [doCreatePost]=useMutation<CreatePostsMutation, CreatePostsMutationVariables>(createPosts)
+  const navigation = useNavigation()
+  const { userId } = useContext(AuthContext)
+  const [description, setDescription] = useState("");
 
-    const onSubmit=async()=>{
-        try {
-            const response =  await doCreatePost({
-                variables:{
-                    input:{
-                        description,
-                        image,
-                        nOfComments:0,
-                        nOfLikes:0,
-                        userID:userId
-                    },
-                },
-            });
-            if(navigation.canGoBack()){
-                navigation.goBack()
-            }
-            setDescription("")
-            console.log(response)
-        } catch (e) {
-            Alert.alert('Error uploading the post',(e as Error).message)
-        }
+  const [doCreatePost] = useMutation<CreatePostsMutation, CreatePostsMutationVariables>(createPosts)
+  const { image, images, video } = route.params;
+  // console.log(image);
+
+
+  const onSubmit = async () => {
+    try {
+      const response = await doCreatePost({
+        variables: {
+          input: {
+            description,
+            image: image,
+            images: images,
+            video: video,
+            nOfComments: 0,
+            nOfLikes: 0,
+            userID: userId
+          },
+        },
+      });
+      navigation.popToTop()
+      navigation.navigate('ProfileStack')
+      setDescription("")
+      console.log(response)
+    } catch (e) {
+      Alert.alert('Error uploading the post', (e as Error).message)
     }
+  }
 
-  const { image } = route.params;
-  console.log(image);
+
+  let content;
+
+  if (image) {
+    content = (
+
+      <Image
+        source={{
+          uri: image,
+        }}
+        style={styles.postimg}
+      />
+
+
+    );
+  } else if (images) {
+    content = <ImageCarousel images={images} />
+  } else if (video) {
+    content = <VideoPlayer uri={video} />
+  }
+
+
+
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: image }}
-        style={{ aspectRatio: 1, width: "100%" }}
-      />
+      <View
+        style={{ aspectRatio: 1, width: "100%" }}>
+        {content}
+      </View>
 
       <TextInput
         placeholderTextColor={"grey"}
@@ -54,7 +81,7 @@ const CreatePost = ({ route }) => {
         style={styles.input}
       />
 
-      <Buttons text="Submit" onPress={onSubmit}/>
+      <Buttons text="Submit" onPress={onSubmit} />
     </View>
   );
 };
@@ -70,6 +97,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: "4%",
   },
+  postimg: {
+    width: "100%",
+    aspectRatio: 1,
+  }
 });
 
 export default CreatePost;

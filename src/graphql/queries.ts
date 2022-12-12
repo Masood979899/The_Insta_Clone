@@ -265,16 +265,18 @@ export const likesByUserID = /* GraphQL */ `
     }
   }
 `;
-export const likesByPostsID = /* GraphQL */ `
-  query LikesByPostsID(
+export const likesForPostByUser = /* GraphQL */ `
+  query LikesForPostByUser(
     $postsID: ID!
+    $userID: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelLikesFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    likesByPostsID(
+    LikesForPostByUser(
       postsID: $postsID
+      userID: $userID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -902,7 +904,6 @@ export const postsByUserID = /* GraphQL */ `
     }
   }
 `;
-
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {

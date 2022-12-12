@@ -44,3 +44,16 @@ export const listPosts = gql `
     }
   }
 `;
+export const deletePosts = gql `
+  mutation DeletePosts(
+    $input: DeletePostsInput!
+    $condition: ModelPostsConditionInput
+  ) {
+    deletePosts(input: $input, condition: $condition) {
+      id
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
