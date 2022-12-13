@@ -1,22 +1,30 @@
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useCommentService from '../services/CommentServices';
 
-const Input = () => {
-
-
-const onPost =() => {
-console.log(addComment)
-
-setAddComment("")
-
+interface IInput{
+  postId:string
 }
 
 
-const [addComment, setAddComment]=useState("")
+const Input = ({postId}:IInput) => {
+  const [addComment, setAddComment]=useState("")
+  const insets = useSafeAreaInsets();
+  const {onCreateComment}=useCommentService(postId)
+
+
+const onPost=async()=>{
+  onCreateComment(addComment);
+// console.log(addComment)
+  setAddComment("")
+};
+
+    
 
       const avatar="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
     return (
-    <View style={styles.container}>
+    <View style={[styles.container,{paddingBottom:insets.bottom}]}>
       <Image
       source={{uri:avatar}}
       style={styles.avatar}
@@ -65,6 +73,11 @@ const styles= StyleSheet.create({
     textInput:{
         marginLeft:"2%",
         color:"black",
+        borderRadius:20,
+        borderWidth:1,
+        width:"90%",
+        padding:"2%",
+        borderColor:"grey"
     }
 })
 

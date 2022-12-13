@@ -2193,16 +2193,17 @@ export type CommentsByUserIDQuery = {
   } | null,
 };
 
-export type CommentsByPostsIDQueryVariables = {
+export type CommentsForPostByUserQueryVariables = {
   postsID: string,
+  userID?: ModelIDKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelCommentsFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type CommentsByPostsIDQuery = {
-  commentsByPostsID?:  {
+export type CommentsForPostByUserQuery = {
+  CommentsForPostByUser?:  {
     __typename: "ModelCommentsConnection",
     items:  Array< {
       __typename: "Comments",

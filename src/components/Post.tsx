@@ -4,10 +4,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import React, { useContext, useState } from "react";
-import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -16,25 +14,11 @@ import ImageCarousel from "./ImageCarousel";
 import VideoPlayer from "./VideoPlayer";
 import DoublePress from "./DoublePress";
 import { useNavigation } from "@react-navigation/native";
-import {
-  CreateLikesMutation,
-  CreateLikesMutationVariables,
-  DeleteLikesMutation,
-  DeleteLikesMutationVariables,
-  LikesForPostByUserQuery,
-  LikesForPostByUserQueryVariables,
-  Posts,
-  UpdatePostsMutation,
-  UpdatePostsMutationVariables,
-} from "../API";
+import { Posts } from "../API";
 import { DEFAULT_USER_IMAGE } from "../config";
 import PostMenu from "../containers/HomeScreen/PostMenu";
-import { useMutation, useQuery } from "@apollo/client";
-import { createLikes, deleteLikes } from "./likesMutation";
 import { AuthContext } from "../context/AuthContext";
-import { likesForPostByUser } from "./likesqueries";
-import { postsByUserID } from "../graphql/queries";
-import { updatePosts } from "./postqueries";
+import useLikeService from "../services/LikeService";
 
 interface IPostProps {
   data: Posts;
@@ -43,61 +27,15 @@ interface IPostProps {
 
 const Post = ({ data, isVisible }: IPostProps) => {
   const navigation = useNavigation();
-  const { userId } = useContext(AuthContext);
-
+ 
+  const { toggleLike, isLiked } = useLikeService(data);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
-  const [doCreateLikes] = useMutation<
-    CreateLikesMutation,
-    CreateLikesMutationVariables
-  >(createLikes, {
-    variables: { input: { userID: userId, postsID: data.id } },
-    refetchQueries: ["LikesForPostByUser"],
-  });
-
-  const [doDeleteLikes] = useMutation<
-    DeleteLikesMutation,
-    DeleteLikesMutationVariables
-  >(deleteLikes);
-
-const [doUpdatePost]=useMutation<UpdatePostsMutation, UpdatePostsMutationVariables>(updatePosts)
-
-  const { data: userLikeData } = useQuery<
-    LikesForPostByUserQuery,
-    LikesForPostByUserQueryVariables
-  >(likesForPostByUser, {
-    variables: { postsID: data.id, userID: { eq: userId } },
-  });
-  const userLike = (userLikeData?.LikesForPostByUser?.items || []).filter(
-    (like) => !like?._deleted
-  )?.[0];
+  const PostLikes = data.Likes?.items.filter((like) => !like?._deleted) || [];
 
   const onDoublePress = async () => {
-    if (!userLike) {
-      doCreateLikes();
-    } else {
-      doDeleteLikes({
-        variables: {
-          input: { id: userLike?.id, _version: userLike?._version },
-        },
-      });
-    }
+    toggleLike();
   };
-
-  // const onDoublePress =async() => {
-  //   if (userLike) {
-
-  //   const response= await  doDeleteLikes({
-  //       variables: {
-  //         input: { id: userLike?.id, _version: userLike?._version }
-  //       },
-  //     });
-  //   console.log(response)
-  //   }else {
-  //   doCreateLikes();
-  //   }
-
-  // }
 
   let content;
 
@@ -153,10 +91,10 @@ const [doUpdatePost]=useMutation<UpdatePostsMutation, UpdatePostsMutationVariabl
       <View style={styles.footer}>
         <TouchableOpacity onPress={onDoublePress}>
           <AntDesign
-            name={userLike ? "heart" : "hearto"}
+            name={isLiked ? "heart" : "hearto"}
             size={24}
             style={styles.icon}
-            color={userLike ? "#ED4956" : "black"}
+            color={isLiked ? "#ED4956" : "black"}
           />
         </TouchableOpacity>
         <TouchableOpacity>
@@ -182,18 +120,30 @@ const [doUpdatePost]=useMutation<UpdatePostsMutation, UpdatePostsMutationVariabl
 
       {/*likes */}
       <View style={styles.likes}>
-        {/* <Image source={{uri: data.User?.image}} style={styles.avatar} />
-        <Image source={{uri: avatar}} style={styles.avatar2} />
-        <Image source={{uri: avatar}} style={styles.avatar3} /> */}
-        <Text>
-          Liked by <Text style={styles.name}>mustafa</Text> and{" "}
-          <Text
-            onPress={() => navigation.navigate("PostLikes", { id: data?.id })}
-            style={styles.name}
-          >
-            {data.nOfLikes} others{" "}
-          </Text>{" "}
-        </Text>
+        {PostLikes?.length === 0 ? (
+          <Text style={{ fontWeight: "400" }}>
+            Be the first to like the post
+          </Text>
+        ) : (
+          <Text>
+            Liked by{" "}
+            <Text style={styles.name}>{PostLikes[0]?.User?.username}</Text>
+            {PostLikes.length > 1 && (
+              <>
+                {" "}
+                and{" "}
+                <Text
+                  onPress={() =>
+                    navigation.navigate("PostLikes", { id: data?.id })
+                  }
+                  style={styles.name}
+                >
+                  {data.nOfLikes - 1} others{" "}
+                </Text>{" "}
+              </>
+            )}
+          </Text>
+        )}
       </View>
 
       {/*description */}
@@ -213,21 +163,21 @@ const [doUpdatePost]=useMutation<UpdatePostsMutation, UpdatePostsMutationVariabl
 
       {/*Comments */}
       <Text
-        onPress={() => navigation.navigate("Comments")}
+        onPress={() => navigation.navigate("Comments",{postId:data?.id})}
         style={{ color: "grey", marginTop: "2%", marginLeft: "2%" }}
       >
         view all {data.nOfComments} comments
       </Text>
-      {data.Comments?.items ||
-        []?.map(
+      {/*listComments*/}
+      {(data?.Comments?.items ||
+        [])?.map(
           (comment) =>
             comment && (
-              <Comments data={comment} key={comment?.id} includeDetail />
+              <Comments data={comment} key={comment?.id} />
             )
         )}
 
       {/*createdAt*/}
-
       <Text style={{ color: "grey", marginTop: "2%", padding: "2%" }}>
         {data.createdAt}
       </Text>

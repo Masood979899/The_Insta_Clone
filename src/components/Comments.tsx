@@ -1,8 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { Comments as CommentType } from '../API'
+import { Comments as CommentType, CreateCommentsMutation, CreateCommentsMutationVariables } from '../API'
 import { DEFAULT_USER_IMAGE } from '../config'
+import { createComments } from '../containers/CommentScreen/mutation'
+import { AuthContext } from '../context/AuthContext'
+import { useMutation } from '@apollo/client'
 
 interface ICommentProps{
   data:CommentType
@@ -12,7 +15,7 @@ interface ICommentProps{
 // const avatar="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
 
 const Comments = ({data,includeDetail=false}:ICommentProps) => {
-
+  
   const [isLiked, setIsLiked]= useState(false)
 
 const toggleLike=()=>{

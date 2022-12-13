@@ -552,8 +552,10 @@ export const schema = {
                     "type": "key",
                     "properties": {
                         "name": "byPosts",
+                        "queryField": "CommentsForPostByUser",
                         "fields": [
-                            "postsID"
+                            "postsID",
+                            "userID"
                         ]
                     }
                 },

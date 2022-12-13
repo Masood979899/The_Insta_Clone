@@ -21,6 +21,8 @@ export type MyProfileNavigationProp = BottomTabNavigationProp<
   'ProfileScreen'
 >;
 
+export type CommentsRouteProp = RouteProp<RootNavigatorParamList, 'Comments'>;
+
 export type MyProfileRouteProp = RouteProp<
   BottomTabNavigatorParamList,
   'ProfileScreen'

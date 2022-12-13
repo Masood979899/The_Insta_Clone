@@ -179,7 +179,7 @@ const Navigation = () => {
           component={BottomTabNav}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="CommentScreen" component={CommentScreen} />
+        <Stack.Screen name="Comments" component={CommentScreen} />
       </>
     );
   }

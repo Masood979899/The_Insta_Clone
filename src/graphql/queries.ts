@@ -593,16 +593,18 @@ export const commentsByUserID = /* GraphQL */ `
     }
   }
 `;
-export const commentsByPostsID = /* GraphQL */ `
-  query CommentsByPostsID(
+export const commentsForPostByUser = /* GraphQL */ `
+  query CommentsForPostByUser(
     $postsID: ID!
+    $userID: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelCommentsFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    commentsByPostsID(
+    CommentsForPostByUser(
       postsID: $postsID
+      userID: $userID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

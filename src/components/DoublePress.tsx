@@ -19,7 +19,7 @@ const DoublePress = ({onDoublePress=()=>{},children}:IDoublePressable) => {
     }
     lastTap=now
     }
- 
+    
  
     return (
     <TouchableOpacity>
