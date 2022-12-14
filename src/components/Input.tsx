@@ -16,7 +16,7 @@ const Input = ({postId}:IInput) => {
 
 const onPost=async()=>{
   onCreateComment(addComment);
-// console.log(addComment)
+
   setAddComment("")
 };
 

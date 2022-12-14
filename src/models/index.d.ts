@@ -95,9 +95,11 @@ export declare const User: (new (init: ModelInit<User>) => User) & {
 type EagerPosts = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Posts, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
+  readonly type: string;
   readonly description?: string | null;
   readonly image?: string | null;
   readonly images?: (string | null)[] | null;
@@ -108,16 +110,17 @@ type EagerPosts = {
   readonly userID: string;
   readonly Likes?: (Likes | null)[] | null;
   readonly Comments?: (Comments | null)[] | null;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyPosts = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Posts, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
+  readonly type: string;
   readonly description?: string | null;
   readonly image?: string | null;
   readonly images?: (string | null)[] | null;
@@ -128,7 +131,6 @@ type LazyPosts = {
   readonly userID: string;
   readonly Likes: AsyncCollection<Likes>;
   readonly Comments: AsyncCollection<Comments>;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -141,30 +143,30 @@ export declare const Posts: (new (init: ModelInit<Posts>) => Posts) & {
 type EagerComments = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Comments, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
   readonly comment?: string | null;
   readonly userID: string;
   readonly postsID: string;
   readonly User?: User | null;
   readonly Posts?: Posts | null;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyComments = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Comments, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
   readonly comment?: string | null;
   readonly userID: string;
   readonly postsID: string;
   readonly User: AsyncItem<User | undefined>;
   readonly Posts: AsyncItem<Posts | undefined>;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 

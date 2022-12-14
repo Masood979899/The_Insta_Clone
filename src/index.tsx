@@ -11,6 +11,7 @@ import {
   PostLikeScreen,
   PostUploadScreen,
   Profile,
+  UpdateCommentScreen,
   UpdatePostScreen,
 } from "./containers";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -44,6 +45,8 @@ const HomeStack = () => {
       <Stack.Screen name="createPost" component={CreatePost} />
       <Stack.Screen name="UpdatePost" component={UpdatePostScreen} options={{title:"Update Post"}}/>
       <Stack.Screen name="PostLikes" component={PostLikeScreen} options={{title:"All Likes"}}/>
+      <Stack.Screen name="UpdateComment" component={UpdateCommentScreen} options={{title:"Update Comment"}}/>
+
       
       
 
@@ -179,7 +182,8 @@ const Navigation = () => {
           component={BottomTabNav}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Comments" component={CommentScreen} />
+        <Stack.Screen name="Comments" component={CommentScreen} options={{ title: "Comments" }}/>
+
       </>
     );
   }

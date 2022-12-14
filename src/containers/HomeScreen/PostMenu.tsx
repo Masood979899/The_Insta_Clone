@@ -17,14 +17,14 @@ interface IPostMenu{
 
 const PostMenu = ({post}:IPostMenu) => {
  const navigation=useNavigation();
-  //  console.log(post.User?.id)
+  
     const {userId}=useContext(AuthContext)
     const isMyPost= userId===post?.User?.id;
     const [doDeletePost]=useMutation(deletePosts, {variables:{input:{id:post.id, _version:post._version}}})
 
     const startDeletePost= async() => {
-      const response = await doDeletePost();
-      console.log(response)
+      await doDeletePost();
+     
     }
  
  const onDeletePress=() => {
@@ -50,7 +50,8 @@ const PostMenu = ({post}:IPostMenu) => {
  
     return (
     <Menu renderer={renderers.SlideInMenu} style={styles.dots}>
-      <MenuTrigger>
+      <MenuTrigger
+      >
       <Entypo
             name={'dots-three-horizontal'}
             size={16}

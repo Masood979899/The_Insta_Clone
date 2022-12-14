@@ -1,22 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const commentsForPostByUser = gql `
-  query CommentsForPostByUser(
-    $postsID: ID!
-    $userID: ModelIDKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentsFilterInput
-    $limit: Int
-    $nextToken: String
+query CommentsForPostByUser(
+  $postsID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelCommentsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  CommentsForPostByUser(
+    postsID: $postsID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
   ) {
-    CommentsForPostByUser(
-      postsID: $postsID
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
       items {
         id
         comment
@@ -40,6 +40,22 @@ export const commentsForPostByUser = gql `
       }
       nextToken
       startedAt
+    }
+  }
+`;
+
+
+
+export const deleteComments = gql `
+  mutation DeleteComments(
+    $input: DeleteCommentsInput!
+    $condition: ModelCommentsConditionInput
+  ) {
+    deleteComments(input: $input, condition: $condition) {
+      id
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

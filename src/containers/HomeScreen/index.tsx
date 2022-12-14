@@ -9,16 +9,16 @@ import {
 import React, { useRef, useState } from "react";
 import Post from "../../components/Post";
 import { useQuery } from "@apollo/client";
-import { listPosts } from "./queries";
-import { ListPostsQuery, ListPostsQueryVariables } from "../../API";
+import {  postsByDate } from "./queries";
+import { ListPostsQuery, ListPostsQueryVariables, ModelSortDirection, PostsByDateQuery, PostsByDateQueryVariables } from "../../API";
 import ApiErrorMessage from "../ApiErrorMessage";
 
 const Home = () => {
   const [activePostId, setActivePostId] = useState<string | null>(null);
   const { data, loading, error, refetch } = useQuery<
-    ListPostsQuery,
-    ListPostsQueryVariables
-  >(listPosts);
+    PostsByDateQuery,
+    PostsByDateQueryVariables
+  >(postsByDate,{variables:{type: 'POST', sortDirection:ModelSortDirection.DESC}});
   const viewabilityConfig: ViewabilityConfig = {
     itemVisiblePercentThreshold: 51,
   };
@@ -30,10 +30,12 @@ const Home = () => {
     }
   );
 
-  const posts = (data?.listPosts?.items || []).filter(
+
+
+  const posts = (data?.postsByDate?.items || []).filter(
     (post) => !post?._deleted
   );
-  console.log(posts);
+  
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -46,6 +48,7 @@ const Home = () => {
       />
     );
   }
+
 
   return (
     <View>

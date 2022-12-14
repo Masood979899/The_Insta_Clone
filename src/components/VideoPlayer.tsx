@@ -10,7 +10,7 @@ interface IVideoPlayer{
 
 
 const VideoPlayer = ({uri,paused}:IVideoPlayer) => {
-  console.log(uri)
+  
   
   const [muted,setMuted]=useState(true)
   

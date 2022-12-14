@@ -103,7 +103,7 @@ const validateUsername = async (username:string)=>{
 
   try {
       const response= await getUsersByUsername({variables:{username}});
-      console.log("chk",response)
+      
       if(response.error){
           Alert.alert('Failed to fetch username');
           return 'Failed to fetch username';
@@ -157,7 +157,7 @@ return true;
     /**Delete from cognito */
     authUser?.deleteUser((err) => {
       if (err) {
-        console.log(err);
+        Alert.alert("some thing went wron with signout",(err as Error).message)
       }
       Auth.signOut();
     });

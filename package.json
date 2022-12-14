@@ -23,6 +23,7 @@
     "aws-amplify-react-native": "^7.0.1",
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-subscription-link": "^3.1.2",
+    "dayjs": "^1.11.7",
     "graphql": "^16.6.0",
     "react": "18.1.0",
     "react-hook-form": "^7.39.5",

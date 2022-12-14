@@ -12,7 +12,7 @@ import ApiErrorMessage from '../ApiErrorMessage'
 const UsersScreen = () => {
 
   const {data,error,loading,refetch}=useQuery(listUsers)
-  console.log(data?.items?.id)
+  
 
 if(loading){
   return<ActivityIndicator/>

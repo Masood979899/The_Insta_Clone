@@ -12,7 +12,7 @@ const PostLikeScreen = () => {
   
     const route= useRoute<PostLikeRoutProp>()
     const {id}=route.params;
-    console.log(id)
+   
     
     const {data,loading, error, refetch}=useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables:{postsID:id}})
     if(loading){

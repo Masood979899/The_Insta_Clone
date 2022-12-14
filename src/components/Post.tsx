@@ -19,6 +19,7 @@ import { DEFAULT_USER_IMAGE } from "../config";
 import PostMenu from "../containers/HomeScreen/PostMenu";
 import { AuthContext } from "../context/AuthContext";
 import useLikeService from "../services/LikeService";
+import dayjs from "dayjs";
 
 interface IPostProps {
   data: Posts;
@@ -97,7 +98,9 @@ const Post = ({ data, isVisible }: IPostProps) => {
             color={isLiked ? "#ED4956" : "black"}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate("Comments",{postId:data?.id})}
+        >
           <Ionicons
             name="chatbubble-outline"
             size={24}
@@ -162,12 +165,15 @@ const Post = ({ data, isVisible }: IPostProps) => {
       </View>
 
       {/*Comments */}
-      <Text
+      {data.Comments?.items?.length>2 &&(
+        <Text
         onPress={() => navigation.navigate("Comments",{postId:data?.id})}
         style={{ color: "grey", marginTop: "2%", marginLeft: "2%" }}
       >
         view all {data.nOfComments} comments
       </Text>
+      )}
+      
       {/*listComments*/}
       {(data?.Comments?.items ||
         [])?.map(
@@ -179,7 +185,7 @@ const Post = ({ data, isVisible }: IPostProps) => {
 
       {/*createdAt*/}
       <Text style={{ color: "grey", marginTop: "2%", padding: "2%" }}>
-        {data.createdAt}
+        {dayjs(data.createdAt).fromNow()}
       </Text>
     </>
   );

@@ -35,7 +35,6 @@ const Profile = () => {
 
   // navigation.setOptions({title:userInfo?.username||user.username})
 
-  console.log("profile", authUserId);
   const { data, loading, error, refetch } = useQuery<
     GetUserQuery | GetUserQueryVariables
   >(getUser, { variables: { id: userId } });

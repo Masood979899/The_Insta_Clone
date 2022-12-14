@@ -16,7 +16,7 @@ const CreatePost = ({ route }) => {
 
   const [doCreatePost] = useMutation<CreatePostsMutation, CreatePostsMutationVariables>(createPosts)
   const { image, images, video } = route.params;
-  // console.log(image);
+
 
 
   const onSubmit = async () => {
@@ -24,6 +24,7 @@ const CreatePost = ({ route }) => {
       const response = await doCreatePost({
         variables: {
           input: {
+            type:'POST',
             description,
             image: image,
             images: images,
@@ -35,9 +36,9 @@ const CreatePost = ({ route }) => {
         },
       });
       navigation.popToTop()
-      navigation.navigate('ProfileStack')
+      // navigation.navigate('AuthStack')
       setDescription("")
-      console.log(response)
+      
     } catch (e) {
       Alert.alert('Error uploading the post', (e as Error).message)
     }

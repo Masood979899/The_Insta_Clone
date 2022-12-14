@@ -10,7 +10,7 @@ data:object
 
 
 const UserItem = ({data}:IUserItem) => {
-    // console.log(data)
+   
 
 const navigation= useNavigation()
 

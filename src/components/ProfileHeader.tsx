@@ -21,7 +21,7 @@ const ProfileHeader = ({user}:IProfHeader,) => {
    
   navigation.setOptions({title:user?.username || "Profile"})
 
-  // console.log(user?.Posts?.items.length)
+ 
   return (
     <View style={styles.container}>
       <View style={styles.header}>

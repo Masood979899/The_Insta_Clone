@@ -16,7 +16,7 @@ const PostUploadScreen = () => {
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
          setModalVisible(false)
-         console.log(assets)
+       
          navigation.navigate("createPost",{
           image:assets[0]?.uri,
          })
@@ -35,7 +35,6 @@ const PostUploadScreen = () => {
       { mediaType: "photo" },
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-         console.log(assets)
          navigation.navigate("createPost")
         }
       }
@@ -47,7 +46,7 @@ const PostUploadScreen = () => {
       { mediaType: "video" },
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-         console.log(assets)
+      
         }
       }
     );
