@@ -42,9 +42,11 @@ export const postsByDate = gql `
           items{
             id
             comment
+            _deleted
             User{
               id
               name
+              
             }
           }
         }

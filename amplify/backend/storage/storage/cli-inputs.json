@@ -1,0 +1,14 @@
+{
+  "resourceName": "storage",
+  "policyUUID": "e4f0d552",
+  "bucketName": "the-insta-clone-media",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

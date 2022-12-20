@@ -130,7 +130,7 @@ const BottomTabNav = () => {
         component={ProfileStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name={"user"} size={size} color={color} />
+            <MaterialIcons name={"search"} size={size} color={color} />
           ),
         }}
       />

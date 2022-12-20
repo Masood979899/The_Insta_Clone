@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react";
 import Post from "../../components/Post";
 import { useQuery } from "@apollo/client";
 import {  postsByDate } from "./queries";
-import { ListPostsQuery, ListPostsQueryVariables, ModelSortDirection, PostsByDateQuery, PostsByDateQueryVariables } from "../../API";
+import {  ModelSortDirection, PostsByDateQuery, PostsByDateQueryVariables } from "../../API";
 import ApiErrorMessage from "../ApiErrorMessage";
 
 const Home = () => {

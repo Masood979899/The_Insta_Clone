@@ -12,14 +12,20 @@ const PostUploadScreen = () => {
 
   const onLibrary = () => {
     launchImageLibrary(
-      { mediaType: "photo" },
+      { mediaType: "mixed",selectionLimit:5},
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-         setModalVisible(false)
+        const params : {image?:string,images?:string[],video?:string}={};
+          if(assets.length===1){
+            const field = assets[0].type?.startsWith('video')?'video':'image';
+            params[field]=assets[0].uri
+          }else if(assets.length>1){
+            params.images = assets.map(asset =>asset.uri) as string[];
+          }
+
+          navigation.navigate("createPost",params)
+          setModalVisible(false)
        
-         navigation.navigate("createPost",{
-          image:assets[0]?.uri,
-         })
         }
       }
     );
@@ -35,7 +41,11 @@ const PostUploadScreen = () => {
       { mediaType: "photo" },
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-         navigation.navigate("createPost")
+         if(assets.length ===1){
+          navigation.navigate("createPost",{
+            image:assets[0].uri
+          })
+         }
         }
       }
     );
@@ -46,8 +56,12 @@ const PostUploadScreen = () => {
       { mediaType: "video" },
       ({ didCancel, errorCode, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-      
+          if(assets.length ===1){
+            navigation.navigate("createPost",{
+              video:assets[0].uri
+            })
         }
+      }
       }
     );
   };

@@ -19,7 +19,7 @@ const VideoPlayer = ({uri,paused}:IVideoPlayer) => {
       <Video
       source={{uri}}
       style={styles.video}
-      resizeMode="cover"
+      resizeMode="contain"
       muted={muted}
       repeat={true}
       paused={paused}

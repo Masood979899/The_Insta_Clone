@@ -1,28 +1,48 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Input from "../../components/Input";
-import {  useQuery } from "@apollo/client";
+import {  useQuery, useSubscription } from "@apollo/client";
 import {
-  CommentsByPostsIDQuery,
-  CommentsByPostsIDQueryVariables,
+  Comments as CommentType,
+  CommentsForPostByUserQuery,
+  CommentsForPostByUserQueryVariables,
   ModelSortDirection,
+  OnCreateCommentsByPostIdSubscription,
+  OnCreateCommentsByPostIdSubscriptionVariables,
 } from "../../API";
 import { AuthContext } from "../../context/AuthContext";
-import { commentsForPostByUser } from "./queries";
+import { commentsForPostByUser, onCreateCommentsByPostId } from "./queries";
 import ApiErrorMessage from "../ApiErrorMessage";
 import Comments from "../../components/Comments";
+import { isNetworkRequestInFlight } from "@apollo/client/core/networkStatus";
 
 const CommentScreen = ({route}) => {
-  const { userId } = useContext(AuthContext);
+  const [newComment, setNewComment] = useState<CommentType[]>([])
   const {postId}=route.params;
 
   const { data, loading, error,refetch,fetchMore } = useQuery<
-    CommentsByPostsIDQuery,
-    CommentsByPostsIDQueryVariables
-  >(commentsForPostByUser, { variables: { postsID: postId, sortDirection:ModelSortDirection.DESC,limit:3 } });
+    CommentsForPostByUserQuery,
+    CommentsForPostByUserQueryVariables
+  >(commentsForPostByUser, { variables: { postsID: postId, sortDirection:ModelSortDirection.DESC,limit:10 } });
+
+  const { data: commentsData } = useSubscription<
+  OnCreateCommentsByPostIdSubscription,
+  OnCreateCommentsByPostIdSubscriptionVariables
+>(onCreateCommentsByPostId, { variables: { postsID: postId } });
+console.log(commentsData);
 
 const [isFetchingMore, setIsFetchingMore]=useState(false)
-const nextToken = data?.CommentsForPostByUser?.nextToken;
+
+useEffect(() => {
+  if(commentsData?.onCreateCommentsByPostId){
+      setNewComment(existingNewComment => [
+        commentsData?.onCreateCommentsByPostId as CommentType, ...existingNewComment
+      ])}
+  }, [commentsData])
+
+const nextToken = data?.CommentsForPostByUser?.nextToken;0
+
+
 
 const loadMore=async()=>{
 
@@ -33,6 +53,9 @@ const loadMore=async()=>{
 
   await fetchMore({variables:{nextToken}})
   setIsFetchingMore(false)
+}
+const isNew=(comments:CommentType)=>{
+  return newComment.some(c => c.id === comments?.id)
 }
 
 if(loading){
@@ -45,20 +68,20 @@ if(error){
   )
 }
 
-const comments= data?.CommentsForPostByUser?.items.filter((comment:any)=>!comment?._deleted)
+const comments= data?.CommentsForPostByUser?.items.filter((comment:any)=>!comment?._deleted)||[];
 
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        data={comments}
+        data={[...newComment, ...comments]}
         inverted
         renderItem={({ item }) => 
-        
-          <Comments data={item} includeDetail />
-        
+        item&&(
+          <Comments data={item} includeDetail isNew={isNew(item)} />
+        )
         }
-        ListFooterComponent={()=><Text onPress={loadMore} style={{padding:"4%"}}>Load more</Text>}
-
+        // ListFooterComponent={()=><Text onPress={loadMore} style={{padding:"4%"}}>Load more</Text>}
+        onEndReached={()=>loadMore()}
         onRefresh={refetch}
         refreshing={loading}
       />

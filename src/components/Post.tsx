@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, {useState } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -17,9 +17,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Posts } from "../API";
 import { DEFAULT_USER_IMAGE } from "../config";
 import PostMenu from "../containers/HomeScreen/PostMenu";
-import { AuthContext } from "../context/AuthContext";
 import useLikeService from "../services/LikeService";
 import dayjs from "dayjs";
+import Content from "./Content";
 
 interface IPostProps {
   data: Posts;
@@ -28,7 +28,7 @@ interface IPostProps {
 
 const Post = ({ data, isVisible }: IPostProps) => {
   const navigation = useNavigation();
- 
+
   const { toggleLike, isLiked } = useLikeService(data);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
@@ -38,28 +38,14 @@ const Post = ({ data, isVisible }: IPostProps) => {
     toggleLike();
   };
 
-  let content;
-
-  if (data.image) {
-    content = (
-      <DoublePress onDoublePress={onDoublePress}>
-        <Image
-          source={{
-            uri: data.image,
-          }}
-          style={styles.postimg}
-        />
-      </DoublePress>
-    );
-  } else if (data.images) {
-    content = <ImageCarousel images={data.images} />;
-  } else if (data.video) {
-    content = <VideoPlayer uri={data.video} paused={!isVisible} />;
-  }
+  // console.log(data.image)
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
+
+  const comments=data?.Comments?.items.filter((comment)=>!comment?._deleted)||[]
+
 
   return (
     <>
@@ -86,7 +72,9 @@ const Post = ({ data, isVisible }: IPostProps) => {
       </View>
 
       {/*image*/}
-      {content}
+      <DoublePress onDoublePress={onDoublePress}>
+        <Content post={data} isVisible={isVisible}/>
+        </DoublePress>
 
       {/*footer*/}
       <View style={styles.footer}>
@@ -165,18 +153,17 @@ const Post = ({ data, isVisible }: IPostProps) => {
       </View>
 
       {/*Comments */}
-      {data.Comments?.items?.length>2 &&(
+      
         <Text
         onPress={() => navigation.navigate("Comments",{postId:data?.id})}
         style={{ color: "grey", marginTop: "2%", marginLeft: "2%" }}
       >
         view all {data.nOfComments} comments
       </Text>
-      )}
+    
       
       {/*listComments*/}
-      {(data?.Comments?.items ||
-        [])?.map(
+      {comments.map(
           (comment) =>
             comment && (
               <Comments data={comment} key={comment?.id} />

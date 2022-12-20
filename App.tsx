@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import React from "react";
 import Navigation from "./src";
 import { Amplify } from "aws-amplify";
@@ -9,7 +10,6 @@ import Client from "./src/apollo/Client";
 import { MenuProvider } from "react-native-popup-menu";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import * as dayjs from 'dayjs'
-
 
 
 dayjs.extend(relativeTime)

@@ -25,9 +25,11 @@
     "aws-appsync-subscription-link": "^3.1.2",
     "dayjs": "^1.11.7",
     "graphql": "^16.6.0",
+    "nanoid": "^4.0.0",
     "react": "18.1.0",
     "react-hook-form": "^7.39.5",
     "react-native": "0.70.4",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-image-picker": "^4.10.1",
     "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-pager-view": "^6.1.1",
@@ -37,7 +39,10 @@
     "react-native-tab-view": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
-    "react-native-vision-camera": "^2.15.2"
+    "react-native-vision-camera": "^2.15.2",
+    "uniqid": "^5.4.0",
+    "unique-random": "^3.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

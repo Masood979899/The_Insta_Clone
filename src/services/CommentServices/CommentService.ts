@@ -1,24 +1,37 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { useContext } from "react";
+import { serializeFetchParameter, useMutation, useQuery } from "@apollo/client";
+import { useContext, useState } from "react";
 import { Alert } from "react-native";
 import {
+  CommentsForPostByUserQuery,
+  CommentsForPostByUserQueryVariables,
   CreateCommentsMutation,
   CreateCommentsMutationVariables,
   GetPostsQuery,
   GetPostsQueryVariables,
+  ModelSortDirection,
   Posts,
   UpdatePostsMutation,
   UpdatePostsMutationVariables,
 } from "../../API";
+import { commentsForPostByUser } from "../../containers/CommentScreen/queries";
 import { AuthContext } from "../../context/AuthContext";
 import { createComments, getPosts, updatePosts } from "./queries";
 
 const useCommentService = (postsId: string) => {
   const { userId } = useContext(AuthContext);
 
+
+  // const { data:allPostComments, loading, error,refetch,fetchMore } = useQuery<
+  //   CommentsForPostByUserQuery,
+  //   CommentsForPostByUserQueryVariables
+  // >(commentsForPostByUser, { variables: { postsID: postsId, sortDirection:ModelSortDirection.DESC,limit:10 } });
+  // const [commentsData,setCommentsData]=useState()
+
+
+
+
   const {
-    data: postData,
-    
+    data: postData,  
   } = useQuery<GetPostsQuery, GetPostsQueryVariables>(getPosts, {
     variables: { id: postsId },
   });
@@ -70,6 +83,8 @@ const useCommentService = (postsId: string) => {
   return {
     
     onCreateComment,
+   
+   
   };
 };
 export default useCommentService;

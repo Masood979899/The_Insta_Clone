@@ -7,15 +7,17 @@ import {
 import { DEFAULT_USER_IMAGE } from "../config";
 import CommentMenu from "../containers/CommentScreen/CommentMenu";
 import dayjs from "dayjs";
+import colors from "../theme/colors";
 
 interface ICommentProps {
   data: CommentType;
-  includeDetail: boolean;
+  includeDetail?: boolean;
+  isNew?: boolean;
 }
 
 // const avatar="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
 
-const Comments = ({ data, includeDetail = false }: ICommentProps) => {
+const Comments = ({ data, includeDetail = false, isNew = false}: ICommentProps) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const toggleLike = () => {
@@ -52,6 +54,7 @@ const Comments = ({ data, includeDetail = false }: ICommentProps) => {
         </View>
         {includeDetail && (
           <View style={styles.footer}>
+            {isNew && <Text style={styles.newComment}>new</Text>}
             <Text style={styles.footertxt}>{(dayjs(data?.createdAt).fromNow())}</Text>
             <Text style={styles.footertxt}>5 likes</Text>
             <Text style={styles.footertxt}>Reply</Text>
@@ -63,11 +66,19 @@ const Comments = ({ data, includeDetail = false }: ICommentProps) => {
 };
 const styles = StyleSheet.create({
   root: {
-    // padding:"2%"
+  
     marginHorizontal: "3%",
   },
   icon: {
     marginHorizontal: "0.5%",
+  },
+  newComment:{
+    backgroundColor:colors.primary,
+    color:colors.white,
+    paddingHorizontal:"2%",
+    marginRight:"2%",
+    borderRadius:5,
+    overflow:"hidden"
   },
   comment: {
     flexDirection: "row",

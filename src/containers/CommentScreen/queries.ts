@@ -59,3 +59,34 @@ export const deleteComments = gql `
     }
   }
 `;
+
+export const onCreateCommentsByPostId = gql `
+  subscription OnCreateCommentsByPostId($postsID: ID!) {
+    onCreateCommentsByPostId(postsID: $postsID) {
+      id
+      comment
+      userID
+      postsID
+      Posts{
+        id
+        nOfComments
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      User{
+        id
+        name
+        username
+        image
+      }      
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

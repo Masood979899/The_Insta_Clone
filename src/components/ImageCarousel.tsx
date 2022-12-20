@@ -10,6 +10,7 @@ interface ICarousel {
 }
 
 const ImageCarousel = ({images,onDoublePress}: ICarousel) => {
+  // console.log(images)
   const {width} = useWindowDimensions();
   const [activeImageIndex,setActiveImageIndex] =useState(0);
 const viewabilityConfig: ViewabilityConfig={
