@@ -40,6 +40,7 @@ export const createLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -67,6 +68,7 @@ export const createLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -81,12 +83,14 @@ export const createLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -128,6 +132,7 @@ export const updateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -155,6 +160,7 @@ export const updateLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -169,12 +175,14 @@ export const updateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -216,6 +224,7 @@ export const deleteLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -243,6 +252,7 @@ export const deleteLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -257,12 +267,14 @@ export const deleteLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -305,6 +317,7 @@ export const createComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -332,6 +345,7 @@ export const createComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -346,11 +360,13 @@ export const createComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -393,6 +409,7 @@ export const updateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -420,6 +437,7 @@ export const updateComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -434,11 +452,13 @@ export const updateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -481,6 +501,7 @@ export const deleteComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -508,6 +529,7 @@ export const deleteComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -522,11 +544,13 @@ export const deleteComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -573,6 +597,7 @@ export const createPosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -586,6 +611,7 @@ export const createPosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -601,6 +627,7 @@ export const createPosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -609,6 +636,7 @@ export const createPosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -655,6 +683,7 @@ export const updatePosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -668,6 +697,7 @@ export const updatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -683,6 +713,7 @@ export const updatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -691,6 +722,7 @@ export const updatePosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -737,6 +769,7 @@ export const deletePosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -750,6 +783,7 @@ export const deletePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -765,6 +799,7 @@ export const deletePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -773,6 +808,7 @@ export const deletePosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -808,6 +844,7 @@ export const createUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -823,6 +860,7 @@ export const createUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -838,6 +876,7 @@ export const createUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -847,6 +886,7 @@ export const createUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -882,6 +922,7 @@ export const updateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -897,6 +938,7 @@ export const updateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -912,6 +954,7 @@ export const updateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -921,6 +964,7 @@ export const updateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -956,6 +1000,7 @@ export const deleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -971,6 +1016,7 @@ export const deleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -986,6 +1032,7 @@ export const deleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -995,6 +1042,7 @@ export const deleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;

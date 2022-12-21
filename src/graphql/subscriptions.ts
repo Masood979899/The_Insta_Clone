@@ -38,6 +38,7 @@ export const onCreateCommentsByPostId = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -65,6 +66,7 @@ export const onCreateCommentsByPostId = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -79,17 +81,22 @@ export const onCreateCommentsByPostId = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateLikes = /* GraphQL */ `
-  subscription OnCreateLikes($filter: ModelSubscriptionLikesFilterInput) {
-    onCreateLikes(filter: $filter) {
+  subscription OnCreateLikes(
+    $filter: ModelSubscriptionLikesFilterInput
+    $owner: String
+  ) {
+    onCreateLikes(filter: $filter, owner: $owner) {
       id
       untitledfield
       userID
@@ -122,6 +129,7 @@ export const onCreateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -149,6 +157,7 @@ export const onCreateLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -163,18 +172,23 @@ export const onCreateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateLikes = /* GraphQL */ `
-  subscription OnUpdateLikes($filter: ModelSubscriptionLikesFilterInput) {
-    onUpdateLikes(filter: $filter) {
+  subscription OnUpdateLikes(
+    $filter: ModelSubscriptionLikesFilterInput
+    $owner: String
+  ) {
+    onUpdateLikes(filter: $filter, owner: $owner) {
       id
       untitledfield
       userID
@@ -207,6 +221,7 @@ export const onUpdateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -234,6 +249,7 @@ export const onUpdateLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -248,18 +264,23 @@ export const onUpdateLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteLikes = /* GraphQL */ `
-  subscription OnDeleteLikes($filter: ModelSubscriptionLikesFilterInput) {
-    onDeleteLikes(filter: $filter) {
+  subscription OnDeleteLikes(
+    $filter: ModelSubscriptionLikesFilterInput
+    $owner: String
+  ) {
+    onDeleteLikes(filter: $filter, owner: $owner) {
       id
       untitledfield
       userID
@@ -292,6 +313,7 @@ export const onDeleteLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -319,6 +341,7 @@ export const onDeleteLikes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -333,18 +356,23 @@ export const onDeleteLikes = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateComments = /* GraphQL */ `
-  subscription OnCreateComments($filter: ModelSubscriptionCommentsFilterInput) {
-    onCreateComments(filter: $filter) {
+  subscription OnCreateComments(
+    $filter: ModelSubscriptionCommentsFilterInput
+    $owner: String
+  ) {
+    onCreateComments(filter: $filter, owner: $owner) {
       id
       createdAt
       comment
@@ -378,6 +406,7 @@ export const onCreateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -405,6 +434,7 @@ export const onCreateComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -419,17 +449,22 @@ export const onCreateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateComments = /* GraphQL */ `
-  subscription OnUpdateComments($filter: ModelSubscriptionCommentsFilterInput) {
-    onUpdateComments(filter: $filter) {
+  subscription OnUpdateComments(
+    $filter: ModelSubscriptionCommentsFilterInput
+    $owner: String
+  ) {
+    onUpdateComments(filter: $filter, owner: $owner) {
       id
       createdAt
       comment
@@ -463,6 +498,7 @@ export const onUpdateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -490,6 +526,7 @@ export const onUpdateComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -504,17 +541,22 @@ export const onUpdateComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteComments = /* GraphQL */ `
-  subscription OnDeleteComments($filter: ModelSubscriptionCommentsFilterInput) {
-    onDeleteComments(filter: $filter) {
+  subscription OnDeleteComments(
+    $filter: ModelSubscriptionCommentsFilterInput
+    $owner: String
+  ) {
+    onDeleteComments(filter: $filter, owner: $owner) {
       id
       createdAt
       comment
@@ -548,6 +590,7 @@ export const onDeleteComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       Posts {
         id
@@ -575,6 +618,7 @@ export const onDeleteComments = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         userID
         Likes {
@@ -589,17 +633,22 @@ export const onDeleteComments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreatePosts = /* GraphQL */ `
-  subscription OnCreatePosts($filter: ModelSubscriptionPostsFilterInput) {
-    onCreatePosts(filter: $filter) {
+  subscription OnCreatePosts(
+    $filter: ModelSubscriptionPostsFilterInput
+    $owner: String
+  ) {
+    onCreatePosts(filter: $filter, owner: $owner) {
       id
       createdAt
       type
@@ -637,6 +686,7 @@ export const onCreatePosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -650,6 +700,7 @@ export const onCreatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -665,6 +716,7 @@ export const onCreatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -673,12 +725,16 @@ export const onCreatePosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdatePosts = /* GraphQL */ `
-  subscription OnUpdatePosts($filter: ModelSubscriptionPostsFilterInput) {
-    onUpdatePosts(filter: $filter) {
+  subscription OnUpdatePosts(
+    $filter: ModelSubscriptionPostsFilterInput
+    $owner: String
+  ) {
+    onUpdatePosts(filter: $filter, owner: $owner) {
       id
       createdAt
       type
@@ -716,6 +772,7 @@ export const onUpdatePosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -729,6 +786,7 @@ export const onUpdatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -744,6 +802,7 @@ export const onUpdatePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -752,12 +811,16 @@ export const onUpdatePosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeletePosts = /* GraphQL */ `
-  subscription OnDeletePosts($filter: ModelSubscriptionPostsFilterInput) {
-    onDeletePosts(filter: $filter) {
+  subscription OnDeletePosts(
+    $filter: ModelSubscriptionPostsFilterInput
+    $owner: String
+  ) {
+    onDeletePosts(filter: $filter, owner: $owner) {
       id
       createdAt
       type
@@ -795,6 +858,7 @@ export const onDeletePosts = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       userID
       Likes {
@@ -808,6 +872,7 @@ export const onDeletePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -823,6 +888,7 @@ export const onDeletePosts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -831,12 +897,16 @@ export const onDeletePosts = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-    onCreateUser(filter: $filter) {
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onCreateUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -863,6 +933,7 @@ export const onCreateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -878,6 +949,7 @@ export const onCreateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -893,6 +965,7 @@ export const onCreateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -902,12 +975,16 @@ export const onCreateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-    onUpdateUser(filter: $filter) {
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onUpdateUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -934,6 +1011,7 @@ export const onUpdateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -949,6 +1027,7 @@ export const onUpdateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -964,6 +1043,7 @@ export const onUpdateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -973,12 +1053,16 @@ export const onUpdateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-    onDeleteUser(filter: $filter) {
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onDeleteUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -1005,6 +1089,7 @@ export const onDeleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -1020,6 +1105,7 @@ export const onDeleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -1035,6 +1121,7 @@ export const onDeleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -1044,6 +1131,7 @@ export const onDeleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
