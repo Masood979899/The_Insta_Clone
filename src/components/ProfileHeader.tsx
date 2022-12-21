@@ -7,6 +7,7 @@ import {Auth} from 'aws-amplify'
 import { User } from '../API'
 import { DEFAULT_USER_IMAGE } from '../config'
 import { AuthContext } from '../context/AuthContext'
+import UserImage from './UserImage'
 
 
 interface IProfHeader{
@@ -25,10 +26,13 @@ const ProfileHeader = ({user}:IProfHeader,) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
+        
+      <UserImage imageKey={user?.image ||undefined} width={"30%"}/>
+        
+        {/* <Image
         source={{uri:user?.image || DEFAULT_USER_IMAGE}}
         style={styles.image}
-        />
+        /> */}
 
         <View style={styles.txtArea}>
           <Text style={styles.number}>{user?.Posts?.items.length}</Text>

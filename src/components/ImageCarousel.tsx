@@ -26,6 +26,7 @@ const onViewableItemsChanged= useRef(({viewableItems}:{viewableItems:Array<ViewT
     <View>
       <FlatList
         data={images}
+        showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <DoublePress onDoublePress={onDoublePress}>
           <Image source={{uri: item}} style={{width, aspectRatio: 1/1}} />

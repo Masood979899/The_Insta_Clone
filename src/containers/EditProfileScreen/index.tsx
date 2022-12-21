@@ -2,7 +2,6 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   StyleSheet,
   ActivityIndicator,
   Alert,
@@ -14,7 +13,11 @@ import fonts from "../../theme/fonts";
 import { useForm, Control, Controller } from "react-hook-form";
 import { IUser } from "../../types/models";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { deleteUser, getUser, usersByUsername } from "../EditProfileScreen/queries";
+import {
+  deleteUser,
+  getUser,
+  usersByUsername,
+} from "../EditProfileScreen/queries";
 import ApiErrorMessage from "../ApiErrorMessage";
 import { AuthContext } from "../../context/AuthContext";
 import { Asset, launchImageLibrary } from "react-native-image-picker";
@@ -22,13 +25,14 @@ import { updateUser } from "./mutation";
 import {
   DeleteUserMutation,
   DeleteUserMutationVariables,
+  UpdateUserInput,
   UpdateUserMutation,
   UpdateUserMutationVariables,
   UsersByUsernameQuery,
   UsersByUsernameQueryVariables,
 } from "../../API";
 import { useNavigation } from "@react-navigation/native";
-import { Auth } from "aws-amplify";
+import { Auth, Storage } from "aws-amplify";
 import CustomInput from "./customInput";
 import { DEFAULT_USER_IMAGE } from "../../config";
 // import CustomInput from './customInput'
@@ -50,7 +54,7 @@ const EditProfileScreen = () => {
   const navigation = useNavigation();
   const { userId, user: authUser } = useContext(AuthContext);
   const { control, handleSubmit, setValue } = useForm<IEditableUser>();
-  const [selectedPhoto, setSelectedPhoto] = useState<null | Asset >(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
   const { data, loading, error } = useQuery(getUser, {
     variables: { id: userId },
   });
@@ -58,8 +62,10 @@ const EditProfileScreen = () => {
   const user = data?.getUser;
   console.log(user);
 
- const [getUsersByUsername]=useLazyQuery<UsersByUsernameQuery | UsersByUsernameQueryVariables>(usersByUsername)
- 
+  const [getUsersByUsername] = useLazyQuery<
+    UsersByUsernameQuery | UsersByUsernameQueryVariables
+  >(usersByUsername);
+
   const [doUpdateUser, { loading: updateLoading, error: updateError }] =
     useMutation<UpdateUserMutation | UpdateUserMutationVariables>(updateUser);
   const [doDelete, { loading: deleteLoading, error: deleteError }] =
@@ -72,19 +78,8 @@ const EditProfileScreen = () => {
       setValue("website", user.website);
       setValue("image", user.image);
     }
-}, [user, setValue]);
+  }, [user, setValue]);
 
-const onSubmit = async (formData: IEditableUser) => {
-    // Alert.alert("submited",data)
-    
-    await doUpdateUser({
-      variables: {
-        input: { id: userId, ...formData, _version: user?._version },
-      },
-    });
-    if(navigation.canGoBack()){
-    navigation.goBack()}
-  };
   const onChangePhoto = () => {
     launchImageLibrary(
       { mediaType: "photo" },
@@ -96,28 +91,55 @@ const onSubmit = async (formData: IEditableUser) => {
     );
   };
 
+  const onSubmit = async (formData: IEditableUser) => {
+    const input: UpdateUserInput = {
+      id: userId,
+      ...formData,
+      _version: user?._version,
+    };
+    // Alert.alert("submited",data)
+    if (selectedPhoto?.uri) {
+      /*upload the photo*/
+      input.image = await uploadMedia(selectedPhoto.uri);
+    }
+    await doUpdateUser({
+      variables: {input},
+    });
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
 
+  const uploadMedia = async (uri: string) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
 
+      /*uploading file*/
+      const s3Response = await Storage.put(`${blob?._data?.name}`, blob);
+      return s3Response?.key;
+    } catch (e) {
+      Alert.alert("Error while uploading ProfileScreen", (e as Error).message);
+    }
+  };
 
-const validateUsername = async (username:string)=>{
+  const validateUsername = async (username: string) => {
+    try {
+      const response = await getUsersByUsername({ variables: { username } });
 
-  try {
-      const response= await getUsersByUsername({variables:{username}});
-      
-      if(response.error){
-          Alert.alert('Failed to fetch username');
-          return 'Failed to fetch username';
+      if (response.error) {
+        Alert.alert("Failed to fetch username");
+        return "Failed to fetch username";
       }
       const users = response.data?.usersByUsername?.items;
-      if(users && users.length >0 && users?.[0]?.id !== userId){
-          return 'Username is already taken';
+      if (users && users.length > 0 && users?.[0]?.id !== userId) {
+        return "Username is already taken";
       }
-  } catch (e) {
-Alert.alert('Failed to fetch username')
-}
-return true;
-
-}
+    } catch (e) {
+      Alert.alert("Failed to fetch username");
+    }
+    return true;
+  };
 
   if (loading) {
     return <ActivityIndicator />;
@@ -131,8 +153,6 @@ return true;
     );
   }
 
-
-  
   const onDeletePress = () => {
     Alert.alert("Are You Sure ", "Deleting your user profile is peramnent", [
       {
@@ -157,19 +177,19 @@ return true;
     /**Delete from cognito */
     authUser?.deleteUser((err) => {
       if (err) {
-        Alert.alert("some thing went wron with signout",(err as Error).message)
+        Alert.alert(
+          "some thing went wron with signout",
+          (err as Error).message
+        );
       }
       Auth.signOut();
     });
   };
 
-  
-
-
   return (
     <View style={styles.page}>
       <Image
-        source={{ uri: selectedPhoto?.uri || user.image ||DEFAULT_USER_IMAGE}}
+        source={{ uri: selectedPhoto?.uri || DEFAULT_USER_IMAGE }}
         style={styles.avatar}
       />
       <Text onPress={onChangePhoto} style={styles.textButton}>
@@ -192,15 +212,14 @@ return true;
         label="Username"
         control={control}
         name="username"
-        rules={{ required: "username is required",
-        validate:validateUsername,
-        minLength: {
+        rules={{
+          required: "username is required",
+          validate: validateUsername,
+          minLength: {
             value: 3,
             message: "name must be at least 3 characters",
-        },
-        
-    
-    }}
+          },
+        }}
       />
       <CustomInput
         label="Website"

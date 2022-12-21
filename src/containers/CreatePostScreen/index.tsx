@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import ImageCarousel from "../../components/ImageCarousel";
 import VideoPlayer from "../../components/VideoPlayer";
 import { Storage } from "aws-amplify";
-import { nanoid } from 'nanoid'
+import colors from "../../theme/colors";
 
 
 const CreatePost = ({ route }) => {
@@ -21,7 +21,7 @@ const CreatePost = ({ route }) => {
   const { userId } = useContext(AuthContext);
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [progress, setProgress] = useState(0.3);
+  const [progress, setProgress] = useState(0);
 
 
   const [doCreatePost] = useMutation<
@@ -30,8 +30,7 @@ const CreatePost = ({ route }) => {
   >(createPosts);
   const { image, images, video } = route.params;
   
-  // const random = uniqueRandom(1,10000)
-  const imageName = nanoid();
+  
   const onSubmit = async () => {
     if (isSubmitting) {
       return;
@@ -51,6 +50,8 @@ const CreatePost = ({ route }) => {
     if (image) {
       input.image = await uploadMedia(image);
     } else if (images) {
+      let carouselImages=[]
+
       const imageKeys = await Promise.all(
         images.map((img) => uploadMedia(img))
       );
@@ -80,14 +81,13 @@ const CreatePost = ({ route }) => {
     try {
       const response = await fetch(uri);
       const blob = await response.blob();
-
-      const uriParts = uri.split(".");
-      // console.log("length",uriParts.length)
-      const extension = uriParts[uriParts.length - 1];
-
-      // console.log("heloo",uuidV4)
+      
       /*uploading file*/
-      const s3Response = await Storage.put(`${imageName}.${extension}`, blob);
+      const s3Response = await Storage.put(`${blob?._data?.name}`, blob, {
+        progressCallback(newProgress){
+          setProgress(newProgress.loaded / newProgress.total);
+        },
+      });
 
       return s3Response?.key;
     } catch (e) {
@@ -128,6 +128,15 @@ const CreatePost = ({ route }) => {
         text={isSubmitting ? "Submitting...!!!" : "Submit"}
         onPress={onSubmit}
       />
+      {isSubmitting &&(
+    <View style={styles.progressContainer}>
+      <View style={[styles.progress, {width:`${progress * 100}%`}]}/>
+    <Text >Uploading {Math.floor(progress *100)}%</Text>
+      
+    </View>
+
+      )}
+
     </View>
   );
 };
@@ -147,6 +156,24 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 1,
   },
+  progressContainer:{
+    backgroundColor:"grey",
+    width:"100%",
+    height:"5%",
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:25,
+    marginVertical:"4%"
+  },
+  progress:{
+    backgroundColor:colors.primary,
+    position:"absolute",
+     height:"100%",
+    alignSelf:"flex-start",
+    borderRadius:25,
+
+
+  }
 });
 
 export default CreatePost;

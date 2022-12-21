@@ -10,8 +10,6 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Comments from "./Comments";
-import ImageCarousel from "./ImageCarousel";
-import VideoPlayer from "./VideoPlayer";
 import DoublePress from "./DoublePress";
 import { useNavigation } from "@react-navigation/native";
 import { Posts } from "../API";
@@ -20,6 +18,7 @@ import PostMenu from "../containers/HomeScreen/PostMenu";
 import useLikeService from "../services/LikeService";
 import dayjs from "dayjs";
 import Content from "./Content";
+import UserImage from "./UserImage";
 
 interface IPostProps {
   data: Posts;
@@ -62,10 +61,8 @@ const Post = ({ data, isVisible }: IPostProps) => {
           }
           style={{ flexDirection: "row", alignItems: "center" }}
         >
-          <Image
-            source={{ uri: data.User?.image || DEFAULT_USER_IMAGE }}
-            style={styles.img}
-          />
+          
+          <UserImage imageKey={data.User?.image ||undefined} width={"22%"}/>
           <Text style={styles.name}>{data?.User?.username}</Text>
         </TouchableOpacity>
         <PostMenu post={data} />

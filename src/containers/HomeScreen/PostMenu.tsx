@@ -7,6 +7,7 @@ import { deletePosts } from './queries';
 import { AuthContext } from '../../context/AuthContext';
 import { Posts } from '../../API';
 import { useNavigation } from '@react-navigation/native';
+import { Storage } from 'aws-amplify';
 
 
 interface IPostMenu{
@@ -23,7 +24,20 @@ const PostMenu = ({post}:IPostMenu) => {
     const [doDeletePost]=useMutation(deletePosts, {variables:{input:{id:post.id, _version:post._version}}})
 
     const startDeletePost= async() => {
+      if(post.image){
+        await Storage.remove(post.image)
+      }if(post.images){
+        await Promise.all(post.images.map(img=> Storage.remove(img)));
+      }if(post.video){
+        await Storage.remove(post.video)
+      }
+      try {
       await doDeletePost();
+      
+    } catch (e) {
+      Alert.alert("failed to delete post",(e as Error).message)
+    }
+    
      
     }
  

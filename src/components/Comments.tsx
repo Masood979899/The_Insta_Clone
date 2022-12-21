@@ -8,6 +8,7 @@ import { DEFAULT_USER_IMAGE } from "../config";
 import CommentMenu from "../containers/CommentScreen/CommentMenu";
 import dayjs from "dayjs";
 import colors from "../theme/colors";
+import UserImage from "./UserImage";
 
 interface ICommentProps {
   data: CommentType;
@@ -29,10 +30,11 @@ const Comments = ({ data, includeDetail = false, isNew = false}: ICommentProps) 
       <View style={styles.root}>
         <View style={styles.comment}>
           {includeDetail && (
-            <Image
-              source={{ uri: data.User?.image || DEFAULT_USER_IMAGE }}
-              style={styles.avatar}
-            />
+            <UserImage imageKey={data.User?.image ||undefined} width={"10%"}/>
+            // <Image
+            //   source={{ uri: data.User?.image || DEFAULT_USER_IMAGE }}
+            //   style={styles.avatar}
+            // />
           )}
 
           <Text style={{ flex: 1 }}>
