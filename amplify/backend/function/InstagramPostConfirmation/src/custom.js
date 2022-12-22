@@ -47,8 +47,8 @@ const saveUser = async (user) => {
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) => {
-  console.log("Hey lambda function is working");
-  console.log(event);
+  console.log("Hey lambda function is working and is updated");
+  
 
   if (!event?.request?.userAttributes) {
     console.log("No User data available");
