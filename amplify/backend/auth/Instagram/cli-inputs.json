@@ -87,4 +87,4 @@
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"instaclone://\"],\"LogoutURLs\":[\"instaclone://\"]}",
     "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"InstagramPostConfirmation\"\n  }\n]"
   }
-} 
+}
