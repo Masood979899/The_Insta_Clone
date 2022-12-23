@@ -5,7 +5,7 @@ export const getUser = gql `
     getUser(id: $id) {
       id
       name
-      email
+      
       username
       bio
       website
