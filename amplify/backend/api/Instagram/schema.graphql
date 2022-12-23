@@ -96,8 +96,8 @@ type UserFollow
       queryField: "userFollowers"
     )
 
-  Follower: User @belongsTo(fields: [followerID])
-  Followee: User @belongsTo(fields: [followeeID])
+  Follower: User @belongsTo(fields: ["followerID"])
+  Followee: User @belongsTo(fields: ["followeeID"])
 }
 
 type Subscription {
