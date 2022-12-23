@@ -1,4 +1,9 @@
 {
   "name": "Insta_Clone",
-  "displayName": "Insta_Clone"
+  "displayName": "Insta_Clone",
+  "extra": {
+    "eas": {
+      "projectId": "192c25ea-7ae2-40e0-a828-7572158fb93a"
+    }
+  }
 }

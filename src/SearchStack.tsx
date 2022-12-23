@@ -1,12 +1,11 @@
-import { View, Text } from 'react-native'
+
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { UsersScreen } from './containers'
-import { SearchStackNavigatorParamList } from './types/types'
 
 
 
-const Tab = createMaterialTopTabNavigator<SearchStackNavigatorParamList>()
+const Tab = createMaterialTopTabNavigator()
 
 
 const SearchStack = () => {
