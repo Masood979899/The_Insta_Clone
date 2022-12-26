@@ -1,23 +1,24 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, TouchableOpacityProps} from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileStackNavigatorParamList } from '../types/types'
 
 
-interface IButtons{
+interface IButtons extends TouchableOpacityProps  {
     text?: string,
     onPress?:()=>void,
     inline?:boolean,
 }
 
 
-const Buttons = ({text="",onPress=()=>{}, inline= false}:IButtons) => {
+const Buttons = ({text="",onPress=()=>{}, inline= false, ...restProps}:IButtons) => {
 
   const navigation= useNavigation<ProfileStackNavigatorParamList>()
 
   return (
     <TouchableOpacity
     style={[styles.btn,inline?{flex:1}:{}]}
+    {...restProps}
     onPress={onPress}
 >
       <Text style={{color:"black",fontWeight:"600"}}>{text}</Text>

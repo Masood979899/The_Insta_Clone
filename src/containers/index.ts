@@ -8,7 +8,8 @@ import CreatePost from "./CreatePostScreen";
 import UpdatePostScreen from "./UpdatePostScreen";
 import PostLikeScreen from "./PostLikeScreen";
 import UpdateCommentScreen from "./UpdateCommentScreen";
-
+import UserFollowersScreen from "./UserFollow/UserFollowersScreen";
+import UserFollowingScreen from "./UserFollow/UserFollowingScreen";
 export {
   Home,
   CommentScreen,
@@ -19,5 +20,8 @@ export {
   CreatePost,
   UpdatePostScreen,
   PostLikeScreen,
-  UpdateCommentScreen
+  UpdateCommentScreen,
+  UserFollowersScreen,
+  UserFollowingScreen
+  
 };

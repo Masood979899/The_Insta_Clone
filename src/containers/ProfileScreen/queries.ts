@@ -84,3 +84,22 @@ export const userFollowings = gql `
     }
   }
 `;
+
+export const deleteUserFollow = gql `
+  mutation DeleteUserFollow(
+    $input: DeleteUserFollowInput!
+    $condition: ModelUserFollowConditionInput
+  ) {
+    deleteUserFollow(input: $input, condition: $condition) {
+      id
+      followerID
+      followeeID 
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;

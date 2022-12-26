@@ -51,14 +51,11 @@ const Post = ({ data, isVisible }: IPostProps) => {
       {/*header*/}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={
-            data.User
-              ? () =>
-                  navigation.navigate("ProfileScreen", {
-                    userId: data?.User?.id,
-                  })
-              : () => {}
-          }
+          onPress={()=>{data.User && navigation.navigate("ProfileScreen", {
+                    screen:"Profile",
+                    params:{userId: data?.User?.id},
+          })
+          }}
           style={{ flexDirection: "row", alignItems: "center" }}
         >
           

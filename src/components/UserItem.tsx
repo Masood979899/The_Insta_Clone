@@ -16,7 +16,10 @@ const navigation= useNavigation()
 
   return (
     <TouchableOpacity 
-    onPress={()=>navigation.navigate("ProfileScreen",{userId:data?.id})}
+    onPress={()=>navigation.navigate("ProfileScreen",{
+      screen:"Profile",
+      params:{userId: data?.id},
+    })}
     style={styles.container} >
       <Image
       source={{uri:data?.image|| DEFAULT_USER_IMAGE}}
