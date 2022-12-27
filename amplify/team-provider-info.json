@@ -30,7 +30,11 @@
         },
         "UserFollowTrigger": {
           "deploymentBucketName": "amplify-instagram-dev-165626-deployment",
-          "s3Key": "amplify-builds/UserFollowTrigger-685a4a75723263757436-build.zip"
+          "s3Key": "amplify-builds/UserFollowTrigger-6b353146374b436a6344-build.zip"
+        },
+        "NewsFeedGenerator": {
+          "deploymentBucketName": "amplify-instagram-dev-165626-deployment",
+          "s3Key": "amplify-builds/NewsFeedGenerator-3843676f544541486f75-build.zip"
         }
       },
       "api": {

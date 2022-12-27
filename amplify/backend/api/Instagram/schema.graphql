@@ -99,6 +99,18 @@ type UserFollow
   Follower: User @belongsTo(fields: ["followerID"])
   Followee: User @belongsTo(fields: ["followeeID"])
 }
+ 
+type UserFeedPost @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+
+  userID: ID! @index(name: "byUser", sortKeyFields: ["postCreatedAt"], queryField: "userFeed")
+
+  postID: ID! @index(name: "byPost")
+  postCreatedAt: AWSDateTime!
+  postOwnerID: ID! @index(name: "byPostOwner")
+
+  Post: Posts @hasOne(fields: ["postID"])
+}
 
 type Subscription {
   onCreateCommentsByPostId(postsID: ID!): Comments

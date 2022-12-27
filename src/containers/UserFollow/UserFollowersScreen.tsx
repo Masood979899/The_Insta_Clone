@@ -1,6 +1,5 @@
 import { View, Text, ActivityIndicator, FlatList } from 'react-native'
 import React from 'react'
-import { TabRouter } from '@react-navigation/native'
 import { useQuery } from '@apollo/client'
 import { UserFollowersQuery, UserFollowersQueryVariables } from '../../API'
 import { userFollowers } from './queries'

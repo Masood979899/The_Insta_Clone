@@ -8,44 +8,51 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-exports.handler = async event => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-  for (const records of event.Records){
-    await handleEvent(records);
-  }
-  return Promise.resolve('Successfully processed DynamoDB record');
-};
 
-const handleEvent = async ({eventID, eventName, dynamodb}) => {
-  console.log(record.eventID);
-  console.log(record.eventName);
-  console.log('DynamoDB Record: %j', record.dynamod);
+ const AWS = require("aws-sdk");
+  const docClient = new AWS.DynamoDB.DocumentClient();
 
-  if(eventName === 'INSERT'){
-    await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowers',1)
-    await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowings',1)
-  }else if(eventName === 'MODIFY' && !dynamodb.OldImage._delete?.BOOL && !!dynamodb.NewImage._deleted?.BOOL){
-    
-    await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowers', -1)
-    await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowings', -1)
-    
-  }
-
-const increaseUserField = async (userId, field, value)=>{
+ const env = process.env.ENV;
+ const AppsyncID = process.env.API_INSTAGRAM_GRAPHQLAPIIDOUTPUT;
+ const UserTableName = `User-${AppsyncID}-${env}`;
+ 
+ exports.handler = async event => {
+   console.log(`EVENT: ${JSON.stringify(event)}`);
+   for (const records of event.Records){
+     await handleEvent(records);
+    }
+    return Promise.resolve('Successfully processed DynamoDB record');
+  };
   
-  const params = {
-    TableName : UserTableName,
-    Key:{id:userId},
-    UpdateExpression:"ADD #field :inc, #version :version_inc" ,
-    ExpressionAttributeValues:{":inc":value, ':version_inc':1},
-    ExpressionAttributeNames:{'#field':field, '#version':'_version'},
+  const handleEvent = async ({eventID, eventName, dynamodb}) => {
+    console.log("eventId",eventID);
+    console.log("eventName",eventName);
+    console.log('DynamoDB Record: %j', dynamodb);
+    
+    if(eventName === 'INSERT'){
+      await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowers',1)
+      await increaseUserField(dynamodb.NewImage.followerID.S, 'nOfFollowing',1)
+    }
+    else if(eventName === 'MODIFY' && !dynamodb.OldImage._delete?.BOOL && !!dynamodb.NewImage._deleted?.BOOL){   
+      await increaseUserField(dynamodb.NewImage.followeeID.S, 'nOfFollowers', -1)
+      await increaseUserField(dynamodb.NewImage.followerID.S, 'nOfFollowing', -1)
+      
+    }
+  }
+  const increaseUserField = async (userId, field, value)=>{
+    
+    const params = {
+      TableName : UserTableName,
+      Key:{id:userId},
+      UpdateExpression:"ADD #field :inc, #version :version_inc" ,
+      ExpressionAttributeValues:{":inc":value, ':version_inc':1},
+      ExpressionAttributeNames:{'#field':field, '#version':'_version'},
+    };
+    try {
+      await docClient.update(params).promise();
+    } catch (e) {
+      console.log(e)
+    }
   }
   
-  try {
-    await docClient.update(params).promise();
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-};
+  

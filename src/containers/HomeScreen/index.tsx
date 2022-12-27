@@ -6,19 +6,21 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Post from "../../components/Post";
 import { useQuery } from "@apollo/client";
-import {  postsByDate } from "./queries";
-import {  ModelSortDirection, PostsByDateQuery, PostsByDateQueryVariables } from "../../API";
+import {  userFeed } from "./queries";
+import {  ModelSortDirection, PostsByDateQuery, PostsByDateQueryVariables, UserFeedQuery, UserFeedQueryVariables } from "../../API";
 import ApiErrorMessage from "../ApiErrorMessage";
+import { AuthContext } from "../../context/AuthContext";
 
 const Home = () => {
+  const {userId}=useContext(AuthContext)
   const [activePostId, setActivePostId] = useState<string | null>(null);
   const { data, loading, error, refetch } = useQuery<
-    PostsByDateQuery,
-    PostsByDateQueryVariables
-  >(postsByDate,{variables:{type: 'POST', sortDirection:ModelSortDirection.DESC}});
+    UserFeedQuery,
+    UserFeedQueryVariables
+  >(userFeed,{variables:{userID:userId, sortDirection:ModelSortDirection.DESC}});
   const viewabilityConfig: ViewabilityConfig = {
     itemVisiblePercentThreshold: 51,
   };
@@ -32,9 +34,8 @@ const Home = () => {
 
 
 
-  const posts = (data?.postsByDate?.items || []).filter(
-    (post) => !post?._deleted
-  );
+  const posts = (data?.userFeed?.items).filter(
+    (item) => !item?._deleted && item?.Post?._deleted);
   
   if (loading) {
     return <ActivityIndicator />;
@@ -48,7 +49,7 @@ const Home = () => {
       />
     );
   }
-
+console.log(posts)
 
   return (
     <View>
@@ -56,7 +57,7 @@ const Home = () => {
         data={posts.sort((a, b) => b?.createdAt.localeCompare(a?.createdAt))}
         onRefresh={() => refetch()}
         refreshing={loading}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => item&&(
           <Post data={item} key={item.id} isVisible={activePostId == item.id} />
         )}
         viewabilityConfig={viewabilityConfig}

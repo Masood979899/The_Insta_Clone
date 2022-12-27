@@ -1673,3 +1673,305 @@ export const userFollowers = /* GraphQL */ `
     }
   }
 `;
+export const getUserFeedPost = /* GraphQL */ `
+  query GetUserFeedPost($id: ID!) {
+    getUserFeedPost(id: $id) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        image
+        images
+        video
+        nOfComments
+        nOfLikes
+        User {
+          id
+          name
+          email
+          username
+          bio
+          website
+          image
+          nOfPosts
+          nOfFollowers
+          nOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        userID
+        Likes {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listUserFeedPosts = /* GraphQL */ `
+  query ListUserFeedPosts(
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserFeedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          image
+          images
+          video
+          nOfComments
+          nOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUserFeedPosts = /* GraphQL */ `
+  query SyncUserFeedPosts(
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserFeedPosts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          image
+          images
+          video
+          nOfComments
+          nOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFeed = /* GraphQL */ `
+  query UserFeed(
+    $userID: ID!
+    $postCreatedAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFeed(
+      userID: $userID
+      postCreatedAt: $postCreatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          image
+          images
+          video
+          nOfComments
+          nOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFeedPostsByPostID = /* GraphQL */ `
+  query UserFeedPostsByPostID(
+    $postID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFeedPostsByPostID(
+      postID: $postID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          image
+          images
+          video
+          nOfComments
+          nOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFeedPostsByPostOwnerID = /* GraphQL */ `
+  query UserFeedPostsByPostOwnerID(
+    $postOwnerID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFeedPostsByPostOwnerID(
+      postOwnerID: $postOwnerID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          image
+          images
+          video
+          nOfComments
+          nOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
