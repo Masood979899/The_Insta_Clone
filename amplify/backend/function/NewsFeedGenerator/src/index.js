@@ -5,10 +5,12 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const PostEventHandler = require('./PostEventHandler')
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
+const postEventHandler = require('./PostEventHandler')
+const userFollowEventHandler = require('./UserFollowEventHandler')
+
 exports.handler = async event => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
@@ -18,15 +20,15 @@ for (const record of event.Records){
 return Promise.resolve('Successfully processed DynamoDB record');
 };
 
-const handleRecord = async record => {
+const handleRecord = async (record) => {
   console.log(record.eventID);
   console.log(record.eventName);
   console.log('DynamoDB Record: %j', record.dynamodb);
 
-  if(record.eventSourceARN.includes('Post')){
-      PostEventHandler(record)
+  if(record.eventSourceARN.includes('Posts')){
+      await postEventHandler(record)
   }else if (record.eventSourceARN.includes('UserFollow')){
-
+    await userFollowEventHandler(record)
   }
 
 };

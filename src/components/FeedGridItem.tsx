@@ -3,12 +3,12 @@ import React from 'react'
 import { IPost } from '../types/models'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Posts } from '../API'
-
+import {S3Image} from 'aws-amplify-react-native'
 const FeedGridItem = ({post}:{post:Posts}) => {
   return (
     <View
     style={{flex:1,aspectRatio:1,margin:"0.1%",maxWidth:"33.3%",padding:"0.3%"}}>
-      <Image source={{uri:post.image||post?.images?.[0]}}
+      <S3Image imgKey={post.image||post?.images?.[0]}
         style={{flex:1}}
         />
         {

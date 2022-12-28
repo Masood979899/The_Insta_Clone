@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const deletePosts = gql`
+
+
+export const deletePosts = gql `
   mutation DeletePosts(
     $input: DeletePostsInput!
     $condition: ModelPostsConditionInput
@@ -39,47 +41,48 @@ export const userFeed = gql `
         postOwnerID
         Post {
           id
-          description
+        description
+        image
+        images
+        video
+        nOfComments
+        nOfLikes
+        userID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        User{
+          id
+          name
+          username
           image
-          images
-          video
-          nOfComments
-          nOfLikes
-          userID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          User {
+        }
+        Comments(limit:2){
+          items{
             id
-            name
-            username
-            image
-          }
-          Comments(limit: 2) {
-            items {
+            comment
+            _deleted
+            User{
               id
-              comment
-              _deleted
-              User {
-                id
-                name
-              }
+              name
+              
             }
           }
-          Likes {
-            items {
+        }
+        Likes{
+          items{
+            id
+            _deleted
+            User{
               id
-              _deleted
-              User {
-                id
-                username
-              }
+              username
             }
-            nextToken
-            startedAt
           }
+          nextToken
+          startedAt
+        }
         }
         createdAt
         updatedAt

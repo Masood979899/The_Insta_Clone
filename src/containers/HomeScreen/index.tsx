@@ -34,8 +34,10 @@ const Home = () => {
 
 
 
-  const posts = (data?.userFeed?.items).filter(
-    (item) => !item?._deleted && item?.Post?._deleted);
+  const posts = (data?.userFeed?.items
+     || []).filter(
+    (item) => !item?._deleted && !item?.Post?._deleted
+  ).map(item =>item?.Post);
   
   if (loading) {
     return <ActivityIndicator />;
@@ -49,7 +51,7 @@ const Home = () => {
       />
     );
   }
-console.log(posts)
+
 
   return (
     <View>
@@ -57,7 +59,7 @@ console.log(posts)
         data={posts.sort((a, b) => b?.createdAt.localeCompare(a?.createdAt))}
         onRefresh={() => refetch()}
         refreshing={loading}
-        renderItem={({ item }) => item&&(
+        renderItem={({ item }) => (
           <Post data={item} key={item.id} isVisible={activePostId == item.id} />
         )}
         viewabilityConfig={viewabilityConfig}
