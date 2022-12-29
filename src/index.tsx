@@ -28,6 +28,7 @@ import { ActivityIndicator, View } from "react-native";
 import { useQuery } from "@apollo/client";
 import { getUser } from "./Navqueries";
 import { GetUserQuery, GetUserQueryVariables } from "./API";
+import UsersFollowTab from "./UsersFollowTabNav";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,7 +42,7 @@ const HomeStack = () => {
         options={{ header: CustomHeader }}
       />
       {/* <Stack.Screen name="PostUploadScreen" component={PostUploadScreen}/> */}
-      <Stack.Screen name="ProfileScreen" component={Profile} />
+      <Stack.Screen name="ProfileScreen" component={ProfileStack} options={{headerShown:false}} />
       <Stack.Screen name="createPost" component={CreatePost} />
       <Stack.Screen name="UpdatePost" component={UpdatePostScreen} options={{title:"Update Post"}}/>
       <Stack.Screen name="PostLikes" component={PostLikeScreen} options={{title:"All Likes"}}/>
@@ -58,12 +59,13 @@ const ProfileStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="MyProfile"
+        name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
       />
       {/* <Stack.Screen name="PostUploadScreen" component={PostUploadScreen}/> */}
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="UserFollowTab" component={UsersFollowTab} />
+
     </Stack.Navigator>
   );
 };
@@ -129,6 +131,7 @@ const BottomTabNav = () => {
         name="Profile"
         component={ProfileStack}
         options={{
+          headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name={"search"} size={size} color={color} />
           ),

@@ -1,10 +1,6 @@
 import {
   View,
-  Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList,
   ActivityIndicator,
 } from "react-native";
 import React, { useContext } from "react";
@@ -15,7 +11,6 @@ import { useQuery } from "@apollo/client";
 import { getUser } from "./queries";
 import {
   MyProfileRouteProp,
-  ProfileNavigationProp,
   UserProfileNavigationProp,
   UserProfileRouteProp,
 } from "../../types/types";
@@ -32,7 +27,7 @@ const Profile = () => {
   const {userId: authUserId} = useContext(AuthContext);
 
   const userId = route?.params?.userId || authUserId;
-
+  console.log("id",userId)
   // navigation.setOptions({title:userInfo?.username||user.username})
 
   const { data, loading, error, refetch } = useQuery<

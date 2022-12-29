@@ -1,18 +1,33 @@
 import { gql } from "@apollo/client";
 
 
-export const postsByDate = gql `
-  query PostsByDate(
-    $type: String!
-    $createdAt: ModelStringKeyConditionInput
+
+export const deletePosts = gql `
+  mutation DeletePosts(
+    $input: DeletePostsInput!
+    $condition: ModelPostsConditionInput
+  ) {
+    deletePosts(input: $input, condition: $condition) {
+      id
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+
+export const userFeed = gql `
+  query UserFeed(
+    $userID: ID!
+    $postCreatedAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelPostsFilterInput
+    $filter: ModelUserFeedPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    postsByDate(
-      type: $type
-      createdAt: $createdAt
+    userFeed(
+      userID: $userID
+      postCreatedAt: $postCreatedAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -20,6 +35,12 @@ export const postsByDate = gql `
     ) {
       items {
         id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
         description
         image
         images
@@ -62,22 +83,16 @@ export const postsByDate = gql `
           nextToken
           startedAt
         }
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
       }
       nextToken
       startedAt
-    }
-  }
-`;
-export const deletePosts = gql `
-  mutation DeletePosts(
-    $input: DeletePostsInput!
-    $condition: ModelPostsConditionInput
-  ) {
-    deletePosts(input: $input, condition: $condition) {
-      id
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

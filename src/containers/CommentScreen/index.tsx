@@ -76,14 +76,15 @@ const comments= data?.CommentsForPostByUser?.items.filter((comment:any)=>!commen
         data={[...newComment, ...comments]}
         inverted
         renderItem={({ item }) => 
-        item&&(
-          <Comments data={item} includeDetail isNew={isNew(item)} />
+        item&&(  
+          <Comments data={item} includeDetail isNew={isNew(item)}  />
         )
         }
         // ListFooterComponent={()=><Text onPress={loadMore} style={{padding:"4%"}}>Load more</Text>}
         onEndReached={()=>loadMore()}
         onRefresh={refetch}
         refreshing={loading}
+        
       />
       <Input postId={postId} />
     </View>
