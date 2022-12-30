@@ -77,7 +77,7 @@ const comments= data?.CommentsForPostByUser?.items.filter((comment:any)=>!commen
         inverted
         renderItem={({ item }) => 
         item&&(  
-          <Comments data={item} includeDetail isNew={isNew(item)}  />
+          <Comments data={item} includeDetail isNew={isNew(item)} key={item.id} />
         )
         }
         // ListFooterComponent={()=><Text onPress={loadMore} style={{padding:"4%"}}>Load more</Text>}

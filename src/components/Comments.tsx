@@ -24,17 +24,15 @@ const Comments = ({ data, includeDetail = false, isNew = false}: ICommentProps) 
   const toggleLike = () => {
     setIsLiked((v) => !v);
   };
-
+  console.log(data)
   return (
     <>
       <View style={styles.root}>
         <View style={styles.comment}>
           {includeDetail && (
+
             <UserImage imageKey={data.User?.image ||undefined} width={"10%"}/>
-            // <Image
-            //   source={{ uri: data.User?.image || DEFAULT_USER_IMAGE }}
-            //   style={styles.avatar}
-            // />
+            
           )}
 
           <Text style={{ flex: 1 }}>

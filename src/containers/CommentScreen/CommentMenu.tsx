@@ -59,9 +59,15 @@ const CommentMenu = ({comment}:ICommentMenu) => {
     return (
     <Menu 
     renderer={renderers.SlideInMenu} style={styles.dots}>
+      
+      
       <MenuTrigger
       triggerOnLongPress={true}
       >
+        {/* <Text style={{ fontWeight: "600", color: "black" }}>
+              {comment.User?.username}
+              {"  "}
+            </Text> */}
       <Text style={{ alignItems: "center", color: "black" }}>
               {comment.comment}
             </Text>

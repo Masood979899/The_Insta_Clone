@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import React, {useState } from "react";
@@ -13,7 +12,6 @@ import Comments from "./Comments";
 import DoublePress from "./DoublePress";
 import { useNavigation } from "@react-navigation/native";
 import { Posts } from "../API";
-import { DEFAULT_USER_IMAGE } from "../config";
 import PostMenu from "../containers/HomeScreen/PostMenu";
 import useLikeService from "../services/LikeService";
 import dayjs from "dayjs";
@@ -37,14 +35,14 @@ const Post = ({ data, isVisible }: IPostProps) => {
     toggleLike();
   };
 
-  // console.log(data.image)
+  console.log("data",data)
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
   const comments=data?.Comments?.items.filter((comment)=>!comment?._deleted)||[]
-
+  
 
   return (
     <>
@@ -152,7 +150,7 @@ const Post = ({ data, isVisible }: IPostProps) => {
         onPress={() => navigation.navigate("Comments",{postId:data?.id})}
         style={{ color: "grey", marginTop: "2%", marginLeft: "2%" }}
       >
-        view all {data.nOfComments} comments
+        view all {comments.length} comments
       </Text>
     
       
@@ -160,7 +158,7 @@ const Post = ({ data, isVisible }: IPostProps) => {
       {comments.map(
           (comment) =>
             comment && (
-              <Comments data={comment} key={comment?.id} />
+              <Comments data={comment}  />
             )
         )}
 

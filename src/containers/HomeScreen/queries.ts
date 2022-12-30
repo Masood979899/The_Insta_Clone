@@ -59,7 +59,7 @@ export const userFeed = gql `
           username
           image
         }
-        Comments(limit:2){
+        Comments(limit:3){
           items{
             id
             comment
@@ -67,6 +67,8 @@ export const userFeed = gql `
             User{
               id
               name
+              username
+              
               
             }
           }

@@ -51,7 +51,7 @@ const Home = () => {
       />
     );
   }
-
+console.log(data)
 
   return (
     <View>
@@ -59,7 +59,7 @@ const Home = () => {
         data={posts.sort((a, b) => b?.createdAt.localeCompare(a?.createdAt))}
         onRefresh={() => refetch()}
         refreshing={loading}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => item && (
           <Post data={item} key={item.id} isVisible={activePostId == item.id} />
         )}
         viewabilityConfig={viewabilityConfig}

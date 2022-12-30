@@ -15,6 +15,7 @@ import {
   UpdatePostScreen,
 } from "./containers";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SearchStack from "./SearchStack";
 import {
   ConfirmEmailScreen,
@@ -29,7 +30,8 @@ import { useQuery } from "@apollo/client";
 import { getUser } from "./Navqueries";
 import { GetUserQuery, GetUserQueryVariables } from "./API";
 import UsersFollowTab from "./UsersFollowTabNav";
-
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import colors from "./theme/colors";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -89,14 +91,14 @@ const AppStack = () => {
 
 const BottomTabNav = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{ tabBarShowLabel:false ,tabBarActiveTintColor:colors.black}}>
       <Tab.Screen
         name="Home"
         component={HomeStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name={"home-filled"} size={size} color={color} />
-          ),
+          ),headerShown:false
         }}
       />
       <Tab.Screen
@@ -105,7 +107,7 @@ const BottomTabNav = () => {
         options={{
           tabBarIcon: ({ size, color }) => (
             <MaterialIcons name={"search"} size={size} color={color} />
-          ),
+          ),headerShown:false
         }}
       />
       <Tab.Screen
@@ -113,7 +115,7 @@ const BottomTabNav = () => {
         component={PostUploadScreen}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcons name={"search"} size={size} color={color} />
+            <MaterialCommunityIcons name={"plus-circle-outline"} size={size} color={color} />
           ),
         }}
       />
@@ -123,7 +125,7 @@ const BottomTabNav = () => {
         component={PostUploadScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name={"search"} size={size} color={color} />
+            <MaterialCommunityIcons name={"heart-outline"} size={size} color={color} />
           ),
         }}
       />
@@ -133,7 +135,7 @@ const BottomTabNav = () => {
         options={{
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name={"search"} size={size} color={color} />
+            <FontAwesome5 name={"user-circle"} size={size} color={color} />
           ),
         }}
       />
